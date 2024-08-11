@@ -11,7 +11,7 @@ import ARKit
 
 struct SettingsView: View {
     @Binding var showSettings: Bool
-    @Environment(Settings.self) var settings: Settings
+    @EnvironmentObject private var settings: Settings
     
     var body: some View {
         NavigationStack {

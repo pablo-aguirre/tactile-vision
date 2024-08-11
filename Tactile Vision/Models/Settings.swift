@@ -9,11 +9,10 @@ import Foundation
 import RealityKit
 import ARKit
 
-@Observable
-class Settings {
-    var debugOptions: ARView.DebugOptions = []
-    var environmentOptions: ARView.Environment.SceneUnderstanding.Options = []
-    var frameOptions: ARConfiguration.FrameSemantics = []
-    var sceneOptions: ARConfiguration.SceneReconstruction = []
-    var planeOptions: ARWorldTrackingConfiguration.PlaneDetection = []
+class Settings: ObservableObject {
+    @Published var debugOptions: ARView.DebugOptions = []
+    @Published var environmentOptions: ARView.Environment.SceneUnderstanding.Options = []
+    @Published var frameOptions: ARConfiguration.FrameSemantics = [.smoothedSceneDepth]
+    @Published var sceneOptions: ARConfiguration.SceneReconstruction = []
+    @Published var planeOptions: ARWorldTrackingConfiguration.PlaneDetection = [.horizontal]
 }

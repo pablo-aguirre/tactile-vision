@@ -11,7 +11,7 @@ import ARKit
 
 struct ContentView: View {
     @State private var showSettings: Bool = false
-    @Environment(Settings.self) private var settings: Settings
+    @EnvironmentObject private var settings: Settings
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -35,5 +35,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .environment(Settings())
+        .environmentObject(Settings())
 }
