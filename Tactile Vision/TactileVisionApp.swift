@@ -8,10 +8,13 @@
 import SwiftUI
 
 @main
-struct Tactile_VisionApp: App {
+struct TactileVisionApp: App {
+    var sessionSettings: Settings = .init()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(sessionSettings)
         }
     }
 }
