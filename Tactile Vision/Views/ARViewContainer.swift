@@ -14,7 +14,7 @@ struct ARViewContainer: UIViewRepresentable {
 
         context.coordinator.arView = arView
         context.coordinator.setup()
-        configureSession(arView)
+        configureSession(in: arView)
         return arView
     }
 
@@ -34,7 +34,7 @@ struct ARViewContainer: UIViewRepresentable {
     
     func makeCoordinator() -> Coordinator { Coordinator() }
     
-    private func configureSession(_ arView: ARView) {
+    private func configureSession(in arView: ARView) {
         let configuration = ARWorldTrackingConfiguration()
         
         /// set 30 fps to reduce overhead on vision framework
