@@ -14,21 +14,21 @@ struct ContentView: View {
     @EnvironmentObject private var settings: Settings
     
     var body: some View {
-        ZStack(alignment: .top) {
+        ZStack(alignment: .bottom) {
             ARViewContainer()
                 .ignoresSafeArea()
             HStack {
-                Spacer()
-                Button(action: { showSettings.toggle() }) {
-                    Image(systemName: "gearshape.fill")
-                        .font(.system(size: 30))
-                        .foregroundStyle(.white)
-                        .background(.gray, in: RoundedRectangle(cornerRadius: 10))
+                Button("Show Settings", systemImage: "arkit") {
+                    showSettings.toggle()
                 }
-            }.padding()
+            }
+            .padding()
+            .background(.secondary)
+            .clipShape(RoundedRectangle(cornerSize: .init(width: 15, height: 15)))
         }
         .sheet(isPresented: $showSettings) {
             SettingsView(showSettings: $showSettings)
+                .presentationDetents([.medium, .large])
         }
     }
 }

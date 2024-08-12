@@ -18,33 +18,24 @@ struct ARViewContainer: UIViewRepresentable {
         return arView
     }
 
-    func updateUIView(_ uiView: ARView, context: Context) {
-        uiView.debugOptions = settings.debugOptions
-        uiView.environment.sceneUnderstanding.options = settings.environmentOptions
-        print("Updating debug and sceneUnderstanding options...")
-        
-        if let configuration = uiView.session.configuration as? ARWorldTrackingConfiguration {
-            configuration.frameSemantics = settings.frameOptions
-            configuration.sceneReconstruction = settings.sceneOptions
-            configuration.planeDetection = settings.planeOptions
-            uiView.session.run(configuration, options: [.removeExistingAnchors, .resetSceneReconstruction])
-            print("Restarting session with new configuration...")
-        }
-    }
+    func updateUIView(_ uiView: ARView, context: Context) {}
     
-    func makeCoordinator() -> Coordinator { Coordinator() }
+    func makeCoordinator() -> Coordinator { Coordinator(settings: settings) }
     
     private func configureSession(in arView: ARView) {
         let configuration = ARWorldTrackingConfiguration()
         
         /// set 30 fps to reduce overhead on vision framework
         if let videoFormat = ARWorldTrackingConfiguration.supportedVideoFormats.first(where: { $0.framesPerSecond == 30 }) {
-            print("Configuring framesPerSecond to 30...")
             configuration.videoFormat = videoFormat
+            print("Configured frames per second to 30 fps")
         }
         
-        configuration.frameSemantics = [.smoothedSceneDepth]
-        configuration.planeDetection = [.horizontal]
+        arView.debugOptions = settings.debugOptions
+        arView.environment.sceneUnderstanding.options = settings.environmentOptions
+        configuration.frameSemantics = settings.frameOptions
+        configuration.sceneReconstruction = settings.sceneOptions
+        configuration.planeDetection = settings.planeOptions
         arView.session.run(configuration)
     }
     
