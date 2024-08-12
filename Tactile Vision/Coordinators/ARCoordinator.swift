@@ -12,22 +12,36 @@ import Vision
 import Combine
 
 class Coordinator: NSObject, ARSessionDelegate {
+    var arSettings: ARSettings
     var settings: Settings
     var arView: ARView?
     private let sphereAnchor = AnchorEntity()
     private let handPoseRequest = VNDetectHumanHandPoseRequest()
     private var subscriptions: Set<AnyCancellable> = []
     
-    init(settings: Settings) {
+    init(arSettings: ARSettings, settings: Settings) {
+        self.arSettings = arSettings
         self.settings = settings
         super.init()
-        setupSubscriptions()
+        
+        handPoseRequest.maximumHandCount = 1
+        let model = ModelEntity(mesh: .generateSphere(radius: settings.radius),
+                                materials: [SimpleMaterial(color: .green, isMetallic: false)])
+        model.collision = .init(shapes: [.generateSphere(radius: settings.radius)])
+        model.generateCollisionShapes(recursive: true)
+        model.name = "sphere"
+        sphereAnchor.addChild(model)
+    
+        settings.$radius.sink { [weak self] radius in
+            guard let model = self?.sphereAnchor.children.first(where: {$0.name == "sphere"}) as? ModelEntity else { return }
+            model.model?.mesh = .generateSphere(radius: radius)
+            model.collision = .init(shapes: [.generateSphere(radius: radius)])
+        }.store(in: &subscriptions)
+        
+        setupARSubscriptions()
     }
     
     func setup() {
-        handPoseRequest.maximumHandCount = 1
-        let model = ModelEntity(mesh: .generateSphere(radius: 0.005), materials: [SimpleMaterial(color: .red, isMetallic: false)])
-        sphereAnchor.addChild(model)
         arView?.scene.addAnchor(sphereAnchor)
     }
     
@@ -48,32 +62,32 @@ class Coordinator: NSObject, ARSessionDelegate {
         }
     }
     
-    private func setupSubscriptions() {
-        settings.$debugOptions.sink { [weak self] debugOptions in
+    private func setupARSubscriptions() {
+        arSettings.$debugOptions.sink { [weak self] debugOptions in
             self?.arView?.debugOptions = debugOptions
             print("Updated ARView debug options")
         }.store(in: &subscriptions)
         
-        settings.$environmentOptions.sink { [weak self] environmentOptions in
+        arSettings.$environmentOptions.sink { [weak self] environmentOptions in
             self?.arView?.environment.sceneUnderstanding.options = environmentOptions
             print("Updated ARView environment scene understanding options")
         }.store(in: &subscriptions)
         
-        settings.$frameOptions.sink { [weak self] frameOptions in
+        arSettings.$frameOptions.sink { [weak self] frameOptions in
             guard let configuration = self?.arView?.session.configuration else { return }
             configuration.frameSemantics = frameOptions
             self?.arView?.session.run(configuration)
             print("Updated session configuration frame semantics")
         }.store(in: &subscriptions)
         
-        settings.$sceneOptions.sink { [weak self] sceneOptions in
+        arSettings.$sceneOptions.sink { [weak self] sceneOptions in
             guard let configuration = self?.arView?.session.configuration as? ARWorldTrackingConfiguration else { return }
             configuration.sceneReconstruction = sceneOptions
             self?.arView?.session.run(configuration)
             print("Updated session configuration scene reconstruction")
         }.store(in: &subscriptions)
         
-        settings.$planeOptions.sink { [weak self] planeOptions in
+        arSettings.$planeOptions.sink { [weak self] planeOptions in
             guard let configuration = self?.arView?.session.configuration as? ARWorldTrackingConfiguration else { return }
             configuration.planeDetection = planeOptions
             self?.arView?.session.run(configuration)

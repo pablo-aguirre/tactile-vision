@@ -4,6 +4,7 @@ import ARKit
 import Combine
 
 struct ARViewContainer: UIViewRepresentable {
+    @EnvironmentObject private var arSettings: ARSettings
     @EnvironmentObject private var settings: Settings
     
     func makeUIView(context: Context) -> ARView {
@@ -20,7 +21,7 @@ struct ARViewContainer: UIViewRepresentable {
 
     func updateUIView(_ uiView: ARView, context: Context) {}
     
-    func makeCoordinator() -> Coordinator { Coordinator(settings: settings) }
+    func makeCoordinator() -> Coordinator { Coordinator(arSettings: arSettings, settings: settings) }
     
     private func configureSession(in arView: ARView) {
         let configuration = ARWorldTrackingConfiguration()
@@ -31,11 +32,11 @@ struct ARViewContainer: UIViewRepresentable {
             print("Configured frames per second to 30 fps")
         }
         
-        arView.debugOptions = settings.debugOptions
-        arView.environment.sceneUnderstanding.options = settings.environmentOptions
-        configuration.frameSemantics = settings.frameOptions
-        configuration.sceneReconstruction = settings.sceneOptions
-        configuration.planeDetection = settings.planeOptions
+        arView.debugOptions = arSettings.debugOptions
+        arView.environment.sceneUnderstanding.options = arSettings.environmentOptions
+        configuration.frameSemantics = arSettings.frameOptions
+        configuration.sceneReconstruction = arSettings.sceneOptions
+        configuration.planeDetection = arSettings.planeOptions
         arView.session.run(configuration)
     }
     

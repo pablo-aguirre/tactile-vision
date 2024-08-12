@@ -9,9 +9,9 @@ import SwiftUI
 import RealityKit
 import ARKit
 
-struct SettingsView: View {
-    @Binding var showSettings: Bool
-    @EnvironmentObject private var settings: Settings
+struct ARSettingsView: View {
+    @Binding var show: Bool
+    @EnvironmentObject private var settings: ARSettings
     
     var body: some View {
         NavigationStack {
@@ -86,15 +86,14 @@ struct SettingsView: View {
                         )
                     }
                 }
+                
             }
-            .navigationTitle("Settings")
+            .navigationTitle("AR Settings")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        showSettings.toggle()
-                    }, label: {
-                        Text("Done").bold()
-                    })
+                    Button("", systemImage: "xmark.circle") {
+                        show.toggle()
+                    }
                 }
             }
         }

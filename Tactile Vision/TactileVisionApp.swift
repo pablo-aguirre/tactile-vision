@@ -9,12 +9,14 @@ import SwiftUI
 
 @main
 struct TactileVisionApp: App {
-    @StateObject var sessionSettings: Settings = .init()
+    @StateObject var arSettings: ARSettings = .init()
+    @StateObject var settings: Settings = .init()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(sessionSettings)
+                .environmentObject(arSettings)
+                .environmentObject(settings)
         }
     }
 }
