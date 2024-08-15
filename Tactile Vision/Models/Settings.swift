@@ -6,7 +6,3 @@
 //
 
 import Foundation
-
-class Settings: ObservableObject {
-    @Published var radius: Float = 0.01
-}

@@ -12,7 +12,7 @@ import ARKit
 struct ContentView: View {
     @State private var showARSettings: Bool = false
     @State private var showSettings: Bool = false
-    @EnvironmentObject private var settings: Settings
+    @StateObject private var arSettings = ARSettings()
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -41,11 +41,11 @@ struct ContentView: View {
             SettingsView(show: $showSettings)
                 .presentationDetents([.fraction(0.20)])
         }
+        .environmentObject(arSettings)
     }
 }
 
 #Preview {
     ContentView()
         .environmentObject(ARSettings())
-        .environmentObject(Settings())
 }

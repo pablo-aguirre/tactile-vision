@@ -5,7 +5,6 @@ import Combine
 
 struct ARViewContainer: UIViewRepresentable {
     @EnvironmentObject private var arSettings: ARSettings
-    @EnvironmentObject private var settings: Settings
     
     func makeUIView(context: Context) -> ARView {
         let arView = ARView(frame: .zero)
@@ -21,7 +20,7 @@ struct ARViewContainer: UIViewRepresentable {
 
     func updateUIView(_ uiView: ARView, context: Context) {}
     
-    func makeCoordinator() -> Coordinator { Coordinator(arSettings: arSettings, settings: settings) }
+    func makeCoordinator() -> Coordinator { Coordinator(arSettings: arSettings) }
     
     private func configureSession(in arView: ARView) {
         let configuration = ARWorldTrackingConfiguration()

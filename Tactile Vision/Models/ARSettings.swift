@@ -15,4 +15,6 @@ class ARSettings: ObservableObject {
     @Published var frameOptions: ARConfiguration.FrameSemantics = [.smoothedSceneDepth]
     @Published var sceneOptions: ARConfiguration.SceneReconstruction = [.mesh]
     @Published var planeOptions: ARWorldTrackingConfiguration.PlaneDetection = [.horizontal]
+    
+    @Published var radius: Float = 0.005
 }

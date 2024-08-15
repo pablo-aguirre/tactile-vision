@@ -13,40 +13,38 @@ import Combine
 
 class Coordinator: NSObject, ARSessionDelegate {
     var arSettings: ARSettings
-    var settings: Settings
     var arView: ARView?
-    private let sphereAnchor = AnchorEntity()
     private let handPoseRequest = VNDetectHumanHandPoseRequest()
     private var subscriptions: Set<AnyCancellable> = []
     
-    init(arSettings: ARSettings, settings: Settings) {
+    init(arSettings: ARSettings) {
         self.arSettings = arSettings
-        self.settings = settings
         super.init()
-        
         handPoseRequest.maximumHandCount = 1
-        let model = ModelEntity(mesh: .generateSphere(radius: settings.radius),
-                                materials: [SimpleMaterial(color: .green, isMetallic: false)])
-        model.collision = .init(shapes: [.generateSphere(radius: settings.radius)])
-        model.generateCollisionShapes(recursive: true)
-        model.name = "sphere"
-        sphereAnchor.addChild(model)
-    
-        settings.$radius.sink { [weak self] radius in
-            guard let model = self?.sphereAnchor.children.first(where: {$0.name == "sphere"}) as? ModelEntity else { return }
-            model.model?.mesh = .generateSphere(radius: radius)
-            model.collision = .init(shapes: [.generateSphere(radius: radius)])
-        }.store(in: &subscriptions)
         
-        setupARSubscriptions()
+        setupSubscriptions()
     }
     
     func setup() {
-        arView?.scene.addAnchor(sphereAnchor)
+        guard let arView = self.arView else { return }
+        
+        let model = ModelEntity(mesh: .generateSphere(radius: arSettings.radius),
+                                materials: [SimpleMaterial(color: .green, isMetallic: false)])
+        model.name = "sphereModel"
+        model.collision = .init(shapes: [.generateSphere(radius: arSettings.radius)])
+        model.generateCollisionShapes(recursive: true)
+        
+        let anchor = AnchorEntity()
+        anchor.name = "sphereAnchor"
+        anchor.addChild(model)
+        
+        arView.scene.addAnchor(anchor)
     }
     
     // MARK: ARSessionDelegate
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        guard let anchor = arView?.scene.findEntity(named: "sphereAnchor") as? AnchorEntity else { return }
+        
         let handler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage)
         do {
             try handler.perform([handPoseRequest])
@@ -55,14 +53,14 @@ class Coordinator: NSObject, ARSessionDelegate {
             let recognizedPoint = try observation.recognizedPoint(.indexDIP)
             
             if recognizedPoint.confidence > 0.7, let (worldCoordinates, confidence) = frame.worldPoint(in: recognizedPoint.location), confidence != .low {
-                sphereAnchor.move(to: .init(translation: worldCoordinates), relativeTo: nil)
+                anchor.transform.translation = worldCoordinates
             }
         } catch {
             print(error.localizedDescription)
         }
     }
     
-    private func setupARSubscriptions() {
+    private func setupSubscriptions() {
         arSettings.$debugOptions.sink { [weak self] debugOptions in
             self?.arView?.debugOptions = debugOptions
             print("Updated ARView debug options")
@@ -92,6 +90,12 @@ class Coordinator: NSObject, ARSessionDelegate {
             configuration.planeDetection = planeOptions
             self?.arView?.session.run(configuration)
             print("Updated session configuration plane detection")
+        }.store(in: &subscriptions)
+        
+        arSettings.$radius.sink { [weak self] radius in
+            guard let model = self?.arView?.scene.findEntity(named: "sphereModel") as? ModelEntity else { return }
+            model.model?.mesh = .generateSphere(radius: radius)
+            model.collision?.shapes = [.generateSphere(radius: radius)]
         }.store(in: &subscriptions)
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject private var settings: Settings
+    @EnvironmentObject private var settings: ARSettings
     @Binding var show: Bool
     
     var body: some View {
@@ -19,7 +19,7 @@ struct SettingsView: View {
                         .foregroundStyle(.green)
                     Text("Radius: \((settings.radius * 100).formatted(.number.precision(.fractionLength(1)))) cm")
                         .frame(minWidth: 100, alignment: .leading)
-                    Slider(value: $settings.radius, in: 0.01...0.1, step: 0.001)
+                    Slider(value: $settings.radius, in: 0.005...0.1, step: 0.001)
                 }
             }
             .navigationTitle("Settings")

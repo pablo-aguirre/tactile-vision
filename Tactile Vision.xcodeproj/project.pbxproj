@@ -21,7 +21,7 @@
 		6E6A88782C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A88772C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift */; };
 		6E6A887A2C68AADB00BA2103 /* ARFrame+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A88792C68AADB00BA2103 /* ARFrame+Extensions.swift */; };
 		6E6A887C2C69FEB200BA2103 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A887B2C69FEB200BA2103 /* SettingsView.swift */; };
-		6E6A887E2C6A0E3600BA2103 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A887D2C6A0E3600BA2103 /* Settings.swift */; };
+		6E6A88802C6DF03300BA2103 /* simd_float4x4+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A887F2C6DF03300BA2103 /* simd_float4x4+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +40,7 @@
 		6E6A88772C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CVPixelBuffer+Extensions.swift"; sourceTree = "<group>"; };
 		6E6A88792C68AADB00BA2103 /* ARFrame+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARFrame+Extensions.swift"; sourceTree = "<group>"; };
 		6E6A887B2C69FEB200BA2103 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		6E6A887D2C6A0E3600BA2103 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		6E6A887F2C6DF03300BA2103 /* simd_float4x4+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "simd_float4x4+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +107,6 @@
 			isa = PBXGroup;
 			children = (
 				6E1A6C012C612BDF00490E16 /* ARSettings.swift */,
-				6E6A887D2C6A0E3600BA2103 /* Settings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -120,6 +119,7 @@
 				6E55D94E2C65118F00EC1068 /* ARWorldTrackingConfiguration+Extensions.swift */,
 				6E6A88772C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift */,
 				6E6A88792C68AADB00BA2103 /* ARFrame+Extensions.swift */,
+				6E6A887F2C6DF03300BA2103 /* simd_float4x4+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -202,9 +202,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E6A88802C6DF03300BA2103 /* simd_float4x4+Extensions.swift in Sources */,
 				6E55D94D2C64F1A000EC1068 /* ARConfiguration+Extensions.swift in Sources */,
 				6E55D94F2C65118F00EC1068 /* ARWorldTrackingConfiguration+Extensions.swift in Sources */,
-				6E6A887E2C6A0E3600BA2103 /* Settings.swift in Sources */,
 				6E1A6C002C612BBD00490E16 /* ARSettingsView.swift in Sources */,
 				6E1A6BF02C612AC900490E16 /* ContentView.swift in Sources */,
 				6E1A6BEE2C612AC900490E16 /* TactileVisionApp.swift in Sources */,
