@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		6E1A6BEE2C612AC900490E16 /* TactileVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1A6BED2C612AC900490E16 /* TactileVisionApp.swift */; };
-		6E1A6BF02C612AC900490E16 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1A6BEF2C612AC900490E16 /* ContentView.swift */; };
+		6E1A6BF02C612AC900490E16 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1A6BEF2C612AC900490E16 /* MainScreen.swift */; };
 		6E1A6BF22C612ACB00490E16 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E1A6BF12C612ACB00490E16 /* Assets.xcassets */; };
 		6E1A6BF52C612ACB00490E16 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E1A6BF42C612ACB00490E16 /* Preview Assets.xcassets */; };
 		6E1A6BFE2C612B6600490E16 /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1A6BFD2C612B6600490E16 /* ARViewContainer.swift */; };
-		6E1A6C002C612BBD00490E16 /* ARSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1A6BFF2C612BBD00490E16 /* ARSettingsView.swift */; };
+		6E1A6C002C612BBD00490E16 /* ARSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1A6BFF2C612BBD00490E16 /* ARSettingsScreen.swift */; };
 		6E1A6C022C612BDF00490E16 /* ARSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1A6C012C612BDF00490E16 /* ARSettings.swift */; };
 		6E55D9492C628F8500EC1068 /* ARView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E55D9482C628F8500EC1068 /* ARView+Extensions.swift */; };
 		6E55D94D2C64F1A000EC1068 /* ARConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E55D94C2C64F1A000EC1068 /* ARConfiguration+Extensions.swift */; };
@@ -20,18 +20,19 @@
 		6E6A88762C68A0B600BA2103 /* ARCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A88752C68A0B600BA2103 /* ARCoordinator.swift */; };
 		6E6A88782C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A88772C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift */; };
 		6E6A887A2C68AADB00BA2103 /* ARFrame+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A88792C68AADB00BA2103 /* ARFrame+Extensions.swift */; };
-		6E6A887C2C69FEB200BA2103 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A887B2C69FEB200BA2103 /* SettingsView.swift */; };
+		6E6A887C2C69FEB200BA2103 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A887B2C69FEB200BA2103 /* SettingsScreen.swift */; };
 		6E6A88802C6DF03300BA2103 /* simd_float4x4+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A887F2C6DF03300BA2103 /* simd_float4x4+Extensions.swift */; };
+		6E7C4E9F2C81BECF005859FF /* CustomButtom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C4E9E2C81BECF005859FF /* CustomButtom.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6E1A6BEA2C612AC900490E16 /* Tactile Vision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tactile Vision.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E1A6BED2C612AC900490E16 /* TactileVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TactileVisionApp.swift; sourceTree = "<group>"; };
-		6E1A6BEF2C612AC900490E16 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6E1A6BEF2C612AC900490E16 /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		6E1A6BF12C612ACB00490E16 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6E1A6BF42C612ACB00490E16 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6E1A6BFD2C612B6600490E16 /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewContainer.swift; sourceTree = "<group>"; };
-		6E1A6BFF2C612BBD00490E16 /* ARSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSettingsView.swift; sourceTree = "<group>"; };
+		6E1A6BFF2C612BBD00490E16 /* ARSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSettingsScreen.swift; sourceTree = "<group>"; };
 		6E1A6C012C612BDF00490E16 /* ARSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSettings.swift; sourceTree = "<group>"; };
 		6E55D9482C628F8500EC1068 /* ARView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARView+Extensions.swift"; sourceTree = "<group>"; };
 		6E55D94C2C64F1A000EC1068 /* ARConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARConfiguration+Extensions.swift"; sourceTree = "<group>"; };
@@ -39,8 +40,9 @@
 		6E6A88752C68A0B600BA2103 /* ARCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARCoordinator.swift; sourceTree = "<group>"; };
 		6E6A88772C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CVPixelBuffer+Extensions.swift"; sourceTree = "<group>"; };
 		6E6A88792C68AADB00BA2103 /* ARFrame+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARFrame+Extensions.swift"; sourceTree = "<group>"; };
-		6E6A887B2C69FEB200BA2103 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		6E6A887B2C69FEB200BA2103 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		6E6A887F2C6DF03300BA2103 /* simd_float4x4+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "simd_float4x4+Extensions.swift"; sourceTree = "<group>"; };
+		6E7C4E9E2C81BECF005859FF /* CustomButtom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtom.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				6E1A6BED2C612AC900490E16 /* TactileVisionApp.swift */,
+				6E7C4E9D2C81BCC4005859FF /* Screens */,
 				6E1A6BFB2C612B0F00490E16 /* Views */,
 				6E1A6BFC2C612B3600490E16 /* Models */,
 				6E6A88742C689FF000BA2103 /* Coordinators */,
@@ -95,10 +98,8 @@
 		6E1A6BFB2C612B0F00490E16 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				6E1A6BEF2C612AC900490E16 /* ContentView.swift */,
 				6E1A6BFD2C612B6600490E16 /* ARViewContainer.swift */,
-				6E1A6BFF2C612BBD00490E16 /* ARSettingsView.swift */,
-				6E6A887B2C69FEB200BA2103 /* SettingsView.swift */,
+				6E7C4E9E2C81BECF005859FF /* CustomButtom.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -130,6 +131,16 @@
 				6E6A88752C68A0B600BA2103 /* ARCoordinator.swift */,
 			);
 			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		6E7C4E9D2C81BCC4005859FF /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				6E1A6BEF2C612AC900490E16 /* MainScreen.swift */,
+				6E1A6BFF2C612BBD00490E16 /* ARSettingsScreen.swift */,
+				6E6A887B2C69FEB200BA2103 /* SettingsScreen.swift */,
+			);
+			path = Screens;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,16 +216,17 @@
 				6E6A88802C6DF03300BA2103 /* simd_float4x4+Extensions.swift in Sources */,
 				6E55D94D2C64F1A000EC1068 /* ARConfiguration+Extensions.swift in Sources */,
 				6E55D94F2C65118F00EC1068 /* ARWorldTrackingConfiguration+Extensions.swift in Sources */,
-				6E1A6C002C612BBD00490E16 /* ARSettingsView.swift in Sources */,
-				6E1A6BF02C612AC900490E16 /* ContentView.swift in Sources */,
+				6E1A6C002C612BBD00490E16 /* ARSettingsScreen.swift in Sources */,
+				6E1A6BF02C612AC900490E16 /* MainScreen.swift in Sources */,
 				6E1A6BEE2C612AC900490E16 /* TactileVisionApp.swift in Sources */,
-				6E6A887C2C69FEB200BA2103 /* SettingsView.swift in Sources */,
+				6E6A887C2C69FEB200BA2103 /* SettingsScreen.swift in Sources */,
 				6E55D9492C628F8500EC1068 /* ARView+Extensions.swift in Sources */,
 				6E1A6BFE2C612B6600490E16 /* ARViewContainer.swift in Sources */,
 				6E6A887A2C68AADB00BA2103 /* ARFrame+Extensions.swift in Sources */,
 				6E1A6C022C612BDF00490E16 /* ARSettings.swift in Sources */,
 				6E6A88762C68A0B600BA2103 /* ARCoordinator.swift in Sources */,
 				6E6A88782C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift in Sources */,
+				6E7C4E9F2C81BECF005859FF /* CustomButtom.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

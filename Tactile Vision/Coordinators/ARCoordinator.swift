@@ -13,7 +13,7 @@ import Combine
 
 class Coordinator: NSObject, ARSessionDelegate {
     var arSettings: ARSettings
-    var arView: ARView?
+    weak var arView: ARView?
     private let handPoseRequest = VNDetectHumanHandPoseRequest()
     private var subscriptions: Set<AnyCancellable> = []
     
@@ -28,22 +28,37 @@ class Coordinator: NSObject, ARSessionDelegate {
     func setup() {
         guard let arView = self.arView else { return }
         
-        let model = ModelEntity(mesh: .generateSphere(radius: arSettings.radius),
-                                materials: [SimpleMaterial(color: .green, isMetallic: false)])
-        model.name = "sphereModel"
-        model.collision = .init(shapes: [.generateSphere(radius: arSettings.radius)])
-        model.generateCollisionShapes(recursive: true)
+        let sphereModel = ModelEntity(mesh: .generateSphere(radius: arSettings.radius), materials: [SimpleMaterial(color: .green, isMetallic: false)])
+        sphereModel.name = "sphereModel"
+        sphereModel.collision = .init(shapes: [.generateSphere(radius: arSettings.radius)], mode: .trigger, filter: .init(group: .default, mask: .default))
+        sphereModel.generateCollisionShapes(recursive: true)
+        let sphereAnchor = AnchorEntity()
+        sphereAnchor.name = "sphereAnchor"
+        sphereAnchor.addChild(sphereModel)
         
-        let anchor = AnchorEntity()
-        anchor.name = "sphereAnchor"
-        anchor.addChild(model)
+        let planeModel = ModelEntity(mesh: .generatePlane(width: 0.4, depth: 0.2), materials: [SimpleMaterial(color: .init(red: 0, green: 0, blue: 1, alpha: 0.25), isMetallic: false)])
+        planeModel.name = "planeModel"
+        planeModel.collision = .init(shapes: [.generateBox(width: 0.4, height: arSettings.height, depth: 0.2)])
+        planeModel.generateCollisionShapes(recursive: true)
+        let planeAnchor = AnchorEntity(.plane(.horizontal, classification: .table, minimumBounds: .zero))
+        planeAnchor.name = "planeAnchor"
+        planeAnchor.addChild(planeModel)
         
-        arView.scene.addAnchor(anchor)
+        arView.scene.addAnchor(sphereAnchor)
+        arView.scene.addAnchor(planeAnchor)
+        
+        arView.scene.subscribe(to: CollisionEvents.Began.self, on: sphereModel) { [weak self] event in
+            let model = ModelEntity(mesh: .generateSphere(radius: 0.005), materials: [SimpleMaterial(color: .red, isMetallic: false)])
+            let anchor = AnchorEntity(world: event.position)
+            anchor.name = "touchAnchor"
+            anchor.addChild(model)
+            self?.arView?.scene.addAnchor(anchor)
+        }.store(in: &subscriptions)
     }
     
     // MARK: ARSessionDelegate
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        guard let anchor = arView?.scene.findEntity(named: "sphereAnchor") as? AnchorEntity else { return }
+        guard let sphereAnchor = arView?.scene.findEntity(named: "sphereAnchor") as? AnchorEntity else { return }
         
         let handler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage)
         do {
@@ -52,8 +67,8 @@ class Coordinator: NSObject, ARSessionDelegate {
             
             let recognizedPoint = try observation.recognizedPoint(.indexDIP)
             
-            if recognizedPoint.confidence > 0.7, let (worldCoordinates, confidence) = frame.worldPoint(in: recognizedPoint.location), confidence != .low {
-                anchor.transform.translation = worldCoordinates
+            if recognizedPoint.confidence > 0.7, let (worldCoordinates, lidarConfidence) = frame.worldPoint(in: recognizedPoint.location), lidarConfidence != .low {
+                sphereAnchor.transform.translation = worldCoordinates
             }
         } catch {
             print(error.localizedDescription)
@@ -96,6 +111,20 @@ class Coordinator: NSObject, ARSessionDelegate {
             guard let model = self?.arView?.scene.findEntity(named: "sphereModel") as? ModelEntity else { return }
             model.model?.mesh = .generateSphere(radius: radius)
             model.collision?.shapes = [.generateSphere(radius: radius)]
+        }.store(in: &subscriptions)
+        
+        arSettings.$cleanTouches.sink { [weak self] _ in
+            guard let arView = self?.arView else { return }
+            
+            let anchorsToRemove = arView.scene.anchors.filter { $0.name == "touchAnchor" }
+            for anchor in anchorsToRemove {
+                arView.scene.anchors.remove(anchor)
+            }
+        }.store(in: &subscriptions)
+        
+        arSettings.$height.sink { [weak self] height in
+            guard let plane = self?.arView?.scene.findEntity(named: "planeModel") as? ModelEntity else { return }
+            plane.collision?.shapes = [.generateBox(width: 0.4, height: height, depth: 0.2)]
         }.store(in: &subscriptions)
     }
 }
