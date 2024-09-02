@@ -36,9 +36,9 @@ class Coordinator: NSObject, ARSessionDelegate {
         sphereAnchor.name = "sphereAnchor"
         sphereAnchor.addChild(sphereModel)
         
-        let planeModel = ModelEntity(mesh: .generatePlane(width: 0.4, depth: 0.2), materials: [SimpleMaterial(color: .init(red: 0, green: 0, blue: 1, alpha: 0.25), isMetallic: false)])
+        let planeModel = ModelEntity(mesh: .generatePlane(width: 1, depth: 1), materials: [SimpleMaterial(color: .init(red: 0, green: 0, blue: 1, alpha: 0.25), isMetallic: false)])
         planeModel.name = "planeModel"
-        planeModel.collision = .init(shapes: [.generateBox(width: 0.4, height: arSettings.height, depth: 0.2)])
+        planeModel.collision = .init(shapes: [.generateBox(width: 1, height: arSettings.height, depth: 1)])
         planeModel.generateCollisionShapes(recursive: true)
         let planeAnchor = AnchorEntity(.plane(.horizontal, classification: .table, minimumBounds: .zero))
         planeAnchor.name = "planeAnchor"
@@ -52,27 +52,12 @@ class Coordinator: NSObject, ARSessionDelegate {
             let anchor = AnchorEntity(world: event.position)
             anchor.name = "touchAnchor"
             anchor.addChild(model)
+            
+            if let prova = self?.arView?.scene.findEntity(named: "imageAnchor") {
+                print(anchor.convert(position: event.position, to: prova))
+            }
             self?.arView?.scene.addAnchor(anchor)
         }.store(in: &subscriptions)
-    }
-    
-    // MARK: ARSessionDelegate
-    func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        guard let sphereAnchor = arView?.scene.findEntity(named: "sphereAnchor") as? AnchorEntity else { return }
-        
-        let handler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage)
-        do {
-            try handler.perform([handPoseRequest])
-            guard let observation = handPoseRequest.results?.first else { return }
-            
-            let recognizedPoint = try observation.recognizedPoint(.indexDIP)
-            
-            if recognizedPoint.confidence > 0.7, let (worldCoordinates, lidarConfidence) = frame.worldPoint(in: recognizedPoint.location), lidarConfidence != .low {
-                sphereAnchor.transform.translation = worldCoordinates
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
     }
     
     private func setupSubscriptions() {
@@ -124,7 +109,49 @@ class Coordinator: NSObject, ARSessionDelegate {
         
         arSettings.$height.sink { [weak self] height in
             guard let plane = self?.arView?.scene.findEntity(named: "planeModel") as? ModelEntity else { return }
-            plane.collision?.shapes = [.generateBox(width: 0.4, height: height, depth: 0.2)]
+            plane.collision?.shapes = [.generateBox(width: 1, height: height, depth: 1)]
         }.store(in: &subscriptions)
+    }
+    
+    // MARK: ARSessionDelegate
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        guard let sphereAnchor = arView?.scene.findEntity(named: "sphereAnchor") as? AnchorEntity else { return }
+        
+        let handler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage)
+        do {
+            try handler.perform([handPoseRequest])
+            guard let observation = handPoseRequest.results?.first else { return }
+            
+            let recognizedPoint = try observation.recognizedPoint(.indexDIP)
+            
+            if recognizedPoint.confidence > 0.7, let (worldCoordinates, lidarConfidence) = frame.worldPoint(in: recognizedPoint.location), lidarConfidence != .low {
+                sphereAnchor.transform.translation = worldCoordinates
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+        guard let imageAnchor = anchors.compactMap({ $0 as? ARImageAnchor }).first,
+              let arView = self.arView else { return }
+        
+        let anchor = AnchorEntity(anchor: imageAnchor)
+        anchor.name = "imageAnchor"
+        let imageWitdh = Float(imageAnchor.referenceImage.physicalSize.width)
+        let imageHeigth = Float(imageAnchor.referenceImage.physicalSize.height)
+        let model = ModelEntity(mesh: .generatePlane(width: imageWitdh * Float(imageAnchor.estimatedScaleFactor), depth: imageHeigth * Float(imageAnchor.estimatedScaleFactor)),
+                                materials: [SimpleMaterial(color: .init(red: 0, green: 1, blue: 0, alpha: 0.25), isMetallic: false)])
+        model.name = "imageModel"
+        anchor.addChild(model)
+        arView.scene.addAnchor(anchor)
+    }
+    
+    func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
+        guard let imageAnchor = anchors.compactMap({ $0 as? ARImageAnchor }).first,
+              let imageModel = self.arView?.scene.findEntity(named: "imageModel") as? ModelEntity else { return }
+        let imageWitdh = Float(imageAnchor.referenceImage.physicalSize.width)
+        let imageHeigth = Float(imageAnchor.referenceImage.physicalSize.height)
+        imageModel.model?.mesh = .generatePlane(width: imageWitdh * Float(imageAnchor.estimatedScaleFactor), depth: imageHeigth * Float(imageAnchor.estimatedScaleFactor))
     }
 }

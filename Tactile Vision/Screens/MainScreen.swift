@@ -27,14 +27,14 @@ struct MainScreen: View {
         .sheet(isPresented: $showARSettings) {
             NavigationStack {
                 ARSettingsScreen()
-                    .presentationDetents([.medium, .large])                
             }
+            .presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $showSettings) {
             NavigationStack {
                 SettingsScreen()
-                    .presentationDetents([.fraction(0.20)])
             }
+            .presentationDetents([.fraction(0.25)])
         }
         .environmentObject(arSettings)
     }
