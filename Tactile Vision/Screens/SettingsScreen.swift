@@ -19,9 +19,9 @@ struct SettingsScreen: View {
                         value: $settings.radius, in: 0.001...0.05, step: 0.001)
             }
             HStack {
-                Image(systemName: "square.fill").foregroundStyle(.blue)
-                Stepper("Plane height: \((settings.height * 100).formatted(.number.precision(.fractionLength(1)))) cm",
-                        value: $settings.height, in: 0.001...0.1, step: 0.001)
+                Image(systemName: "lines.measurement.vertical").foregroundStyle(.blue)
+                Stepper("Threshold: \((settings.threshold * 100).formatted(.number.precision(.fractionLength(1)))) cm",
+                        value: $settings.threshold, in: 0.001...0.1, step: 0.001)
             }
         }
         .navigationTitle("Settings")

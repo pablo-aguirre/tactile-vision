@@ -16,7 +16,9 @@ class ARSettings: ObservableObject {
     @Published var sceneOptions: ARConfiguration.SceneReconstruction = [.mesh]
     @Published var planeOptions: ARWorldTrackingConfiguration.PlaneDetection = [.horizontal]
     
-    @Published var radius: Float = 0.01
-    @Published var height: Float = 0.001
+    @Published var radius: Float = 0.005
+    @Published var threshold: Float = 0.001
     @Published var cleanTouches: Bool = false
+    
+    @Published var coords: SIMD3<Float> = .zero
 }

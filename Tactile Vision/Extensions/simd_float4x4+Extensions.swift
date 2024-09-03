@@ -16,4 +16,8 @@ extension simd_float4x4 {
             SIMD4<Float>(translation.x, translation.y, translation.z, 1)
         )
     }
+    
+    var position: SIMD3<Float> {
+        return SIMD3(x: self.columns.3.x, y: self.columns.3.y, z: self.columns.3.z)
+    }
 }

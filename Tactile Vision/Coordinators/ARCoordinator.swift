@@ -30,34 +30,11 @@ class Coordinator: NSObject, ARSessionDelegate {
         
         let sphereModel = ModelEntity(mesh: .generateSphere(radius: arSettings.radius), materials: [SimpleMaterial(color: .green, isMetallic: false)])
         sphereModel.name = "sphereModel"
-        sphereModel.collision = .init(shapes: [.generateSphere(radius: arSettings.radius)], mode: .trigger, filter: .init(group: .default, mask: .default))
-        sphereModel.generateCollisionShapes(recursive: true)
         let sphereAnchor = AnchorEntity()
         sphereAnchor.name = "sphereAnchor"
         sphereAnchor.addChild(sphereModel)
         
-        let planeModel = ModelEntity(mesh: .generatePlane(width: 1, depth: 1), materials: [SimpleMaterial(color: .init(red: 0, green: 0, blue: 1, alpha: 0.25), isMetallic: false)])
-        planeModel.name = "planeModel"
-        planeModel.collision = .init(shapes: [.generateBox(width: 1, height: arSettings.height, depth: 1)])
-        planeModel.generateCollisionShapes(recursive: true)
-        let planeAnchor = AnchorEntity(.plane(.horizontal, classification: .table, minimumBounds: .zero))
-        planeAnchor.name = "planeAnchor"
-        planeAnchor.addChild(planeModel)
-        
         arView.scene.addAnchor(sphereAnchor)
-        arView.scene.addAnchor(planeAnchor)
-        
-        arView.scene.subscribe(to: CollisionEvents.Began.self, on: sphereModel) { [weak self] event in
-            let model = ModelEntity(mesh: .generateSphere(radius: 0.005), materials: [SimpleMaterial(color: .red, isMetallic: false)])
-            let anchor = AnchorEntity(world: event.position)
-            anchor.name = "touchAnchor"
-            anchor.addChild(model)
-            
-            if let prova = self?.arView?.scene.findEntity(named: "imageAnchor") {
-                print(anchor.convert(position: event.position, to: prova))
-            }
-            self?.arView?.scene.addAnchor(anchor)
-        }.store(in: &subscriptions)
     }
     
     private func setupSubscriptions() {
@@ -95,7 +72,6 @@ class Coordinator: NSObject, ARSessionDelegate {
         arSettings.$radius.sink { [weak self] radius in
             guard let model = self?.arView?.scene.findEntity(named: "sphereModel") as? ModelEntity else { return }
             model.model?.mesh = .generateSphere(radius: radius)
-            model.collision?.shapes = [.generateSphere(radius: radius)]
         }.store(in: &subscriptions)
         
         arSettings.$cleanTouches.sink { [weak self] _ in
@@ -105,11 +81,6 @@ class Coordinator: NSObject, ARSessionDelegate {
             for anchor in anchorsToRemove {
                 arView.scene.anchors.remove(anchor)
             }
-        }.store(in: &subscriptions)
-        
-        arSettings.$height.sink { [weak self] height in
-            guard let plane = self?.arView?.scene.findEntity(named: "planeModel") as? ModelEntity else { return }
-            plane.collision?.shapes = [.generateBox(width: 1, height: height, depth: 1)]
         }.store(in: &subscriptions)
     }
     
@@ -125,7 +96,19 @@ class Coordinator: NSObject, ARSessionDelegate {
             let recognizedPoint = try observation.recognizedPoint(.indexDIP)
             
             if recognizedPoint.confidence > 0.7, let (worldCoordinates, lidarConfidence) = frame.worldPoint(in: recognizedPoint.location), lidarConfidence != .low {
-                sphereAnchor.transform.translation = worldCoordinates
+                sphereAnchor.setPosition(worldCoordinates, relativeTo: nil)
+                
+                if let imageAnchor = arView?.scene.findEntity(named: "imageAnchor") as? AnchorEntity {
+                    let coords = imageAnchor.convert(position: worldCoordinates, from: nil)
+                    arSettings.coords = coords
+                    if coords.y < arSettings.threshold {
+                        let model = ModelEntity(mesh: .generateSphere(radius: arSettings.radius), materials: [SimpleMaterial(color: .red, isMetallic: false)])
+                        let anchor = AnchorEntity(world: worldCoordinates)
+                        anchor.name = "touchAnchor"
+                        anchor.addChild(model)
+                        arView?.scene.addAnchor(anchor)
+                    }
+                }
             }
         } catch {
             print(error.localizedDescription)
@@ -133,25 +116,41 @@ class Coordinator: NSObject, ARSessionDelegate {
     }
     
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
-        guard let imageAnchor = anchors.compactMap({ $0 as? ARImageAnchor }).first,
-              let arView = self.arView else { return }
+        guard let arImageAnchor = anchors.compactMap({ $0 as? ARImageAnchor }).first,
+              let arView = self.arView else {return}
         
-        let anchor = AnchorEntity(anchor: imageAnchor)
+        guard let pointInView = arView.project(arImageAnchor.transform.position),
+              let result = arView.raycast(from: pointInView, allowing: .existingPlaneInfinite, alignment: .horizontal).first else { return }
+        
+        let anchor = AnchorEntity(world: arImageAnchor.transform)
+        anchor.setPosition(result.worldTransform.position, relativeTo: nil)
         anchor.name = "imageAnchor"
-        let imageWitdh = Float(imageAnchor.referenceImage.physicalSize.width)
-        let imageHeigth = Float(imageAnchor.referenceImage.physicalSize.height)
-        let model = ModelEntity(mesh: .generatePlane(width: imageWitdh * Float(imageAnchor.estimatedScaleFactor), depth: imageHeigth * Float(imageAnchor.estimatedScaleFactor)),
-                                materials: [SimpleMaterial(color: .init(red: 0, green: 1, blue: 0, alpha: 0.25), isMetallic: false)])
+        
+        let imageWitdh = Float(arImageAnchor.referenceImage.physicalSize.width)
+        let imageHeigth = Float(arImageAnchor.referenceImage.physicalSize.height)
+        let model = ModelEntity(mesh: .generatePlane(width: imageWitdh * Float(arImageAnchor.estimatedScaleFactor), depth: imageHeigth * Float(arImageAnchor.estimatedScaleFactor)),
+                                materials: [SimpleMaterial(color: .init(red: 0, green: 1, blue: 0, alpha: 0.5), isMetallic: false)])
+        model.collision = .init(shapes: [.generateBox(size: .zero)])
         model.name = "imageModel"
+        
         anchor.addChild(model)
         arView.scene.addAnchor(anchor)
     }
     
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
-        guard let imageAnchor = anchors.compactMap({ $0 as? ARImageAnchor }).first,
-              let imageModel = self.arView?.scene.findEntity(named: "imageModel") as? ModelEntity else { return }
-        let imageWitdh = Float(imageAnchor.referenceImage.physicalSize.width)
-        let imageHeigth = Float(imageAnchor.referenceImage.physicalSize.height)
-        imageModel.model?.mesh = .generatePlane(width: imageWitdh * Float(imageAnchor.estimatedScaleFactor), depth: imageHeigth * Float(imageAnchor.estimatedScaleFactor))
+        guard let arImageAnchor = anchors.compactMap({ $0 as? ARImageAnchor }).first,
+              let arView = self.arView else { return }
+        
+        guard let pointInView = arView.project(arImageAnchor.transform.position),
+              let result = arView.raycast(from: pointInView, allowing: .existingPlaneInfinite, alignment: .horizontal).first else { return }
+        
+        guard let imageAnchor = arView.scene.findEntity(named: "imageAnchor") as? AnchorEntity else { return }
+        imageAnchor.setPosition(result.worldTransform.position, relativeTo: nil)
+        imageAnchor.setOrientation(.init(arImageAnchor.transform), relativeTo: nil)
+        
+        guard let imageModel = arView.scene.findEntity(named: "imageModel") as? ModelEntity else { return }
+        let imageWidth = Float(arImageAnchor.referenceImage.physicalSize.width)
+        let imageHeight = Float(arImageAnchor.referenceImage.physicalSize.height)
+        imageModel.model?.mesh = .generatePlane(width: imageWidth * Float(arImageAnchor.estimatedScaleFactor), depth: imageHeight * Float(arImageAnchor.estimatedScaleFactor))
     }
 }

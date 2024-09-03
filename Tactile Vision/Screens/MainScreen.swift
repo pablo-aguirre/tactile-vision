@@ -18,10 +18,17 @@ struct MainScreen: View {
         ZStack(alignment: .bottom) {
             ARViewContainer()
                 .ignoresSafeArea()
-            HStack {
-                CustomButtom(label: "Settings", systemImage: "arkit") { showARSettings.toggle() }
-                CustomButtom(label: "Settings", systemImage: "hand.tap.fill") { showSettings.toggle() }
-                CustomButtom(label: "Clean", systemImage: "bubbles.and.sparkles.fill") { arSettings.cleanTouches.toggle() }
+            VStack {
+                HStack {
+                    Text("x: \((arSettings.coords * 100).x.formatted(.number.precision(.fractionLength(1)))) cm").foregroundStyle(.red)
+                    Text("y: \((arSettings.coords * 100).y.formatted(.number.precision(.fractionLength(1)))) cm").foregroundStyle(.green)
+                    Text("z: \((arSettings.coords * 100).z.formatted(.number.precision(.fractionLength(1)))) cm").foregroundStyle(.blue)
+                }
+                HStack {
+                    CustomButtom(label: "Settings", systemImage: "arkit") { showARSettings.toggle() }
+                    CustomButtom(label: "Settings", systemImage: "hand.tap.fill") { showSettings.toggle() }
+                    CustomButtom(label: "Clean", systemImage: "bubbles.and.sparkles.fill") { arSettings.cleanTouches.toggle() }
+                }
             }
         }
         .sheet(isPresented: $showARSettings) {
