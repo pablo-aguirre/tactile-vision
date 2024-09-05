@@ -16,6 +16,7 @@ class Coordinator: NSObject, ARSessionDelegate {
     weak var arView: ARView?
     private let handPoseRequest = VNDetectHumanHandPoseRequest()
     private var subscriptions: Set<AnyCancellable> = []
+    private var planeEntity: ModelEntity?
     
     init(arSettings: ARSettings) {
         self.arSettings = arSettings
@@ -86,7 +87,7 @@ class Coordinator: NSObject, ARSessionDelegate {
     
     // MARK: ARSessionDelegate
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        guard let sphereAnchor = arView?.scene.findEntity(named: "sphereAnchor") as? AnchorEntity else { return }
+        guard let sphereAnchor = arView?.scene.findEntity(named: "sphereAnchor") as? AnchorEntity, let arView = self.arView else { return }
         
         let handler = VNImageRequestHandler(cvPixelBuffer: frame.capturedImage)
         do {
@@ -97,60 +98,103 @@ class Coordinator: NSObject, ARSessionDelegate {
             
             if recognizedPoint.confidence > 0.7, let (worldCoordinates, lidarConfidence) = frame.worldPoint(in: recognizedPoint.location), lidarConfidence != .low {
                 sphereAnchor.setPosition(worldCoordinates, relativeTo: nil)
+                arSettings.coords = worldCoordinates
                 
-                if let imageAnchor = arView?.scene.findEntity(named: "imageAnchor") as? AnchorEntity {
-                    let coords = imageAnchor.convert(position: worldCoordinates, from: nil)
-                    arSettings.coords = coords
-                    if coords.y < arSettings.threshold {
-                        let model = ModelEntity(mesh: .generateSphere(radius: arSettings.radius), materials: [SimpleMaterial(color: .red, isMetallic: false)])
+                let points = [frame.worldPoint(in: .init(x: 0.25, y: 0.25)),
+                              frame.worldPoint(in: .init(x: 0.25, y: 0.75)),
+                              frame.worldPoint(in: .init(x: 0.75, y: 0.25)),
+                              frame.worldPoint(in: .init(x: 0.75, y: 0.75))].compactMap { $0 }.filter { $0.1 == .high }.map { $0.0 }
+                
+                if points.count == 4 {
+                    let toRemove = arView.scene.anchors.filter({ $0.name == "prova" })
+                    toRemove.forEach { arView.scene.removeAnchor($0) }
+                    
+                    points.forEach { position in
+                        let anchor = AnchorEntity(world: position)
+                        anchor.name = "prova"
+                        let model = ModelEntity(mesh: .generateSphere(radius: 0.01), materials: [SimpleMaterial(color: .blue, isMetallic: false)])
+                        anchor.addChild(model)
+                        arView.scene.addAnchor(anchor)
+                    }
+                    
+                    // Calcola i vettori
+                    let v1 = points[1] - points[0]
+                    let v2 = points[2] - points[0]
+                    
+                    // Calcola il normale
+                    let normal = simd_cross(v1, v2)
+                    
+                    // Calcola il valore di d nell'equazione del piano
+                    let d = -simd_dot(normal, points[0])
+                    
+                    // Calcolo della distanza del punto dal piano
+                    let numerator = abs(simd_dot(normal, worldCoordinates) + d)
+                    let denominator = simd_length(normal)
+                    let distance = numerator / denominator
+                    
+                    if distance < arSettings.threshold {
                         let anchor = AnchorEntity(world: worldCoordinates)
                         anchor.name = "touchAnchor"
+                        let model = ModelEntity(mesh: .generateSphere(radius: arSettings.radius), materials: [SimpleMaterial(color: .red, isMetallic: false)])
                         anchor.addChild(model)
-                        arView?.scene.addAnchor(anchor)
+                        arView.scene.addAnchor(anchor)
                     }
+                    
+                    arSettings.distance = distance
                 }
+                
             }
         } catch {
             print(error.localizedDescription)
         }
     }
     
-    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
-        guard let arImageAnchor = anchors.compactMap({ $0 as? ARImageAnchor }).first,
-              let arView = self.arView else {return}
-        
-        guard let pointInView = arView.project(arImageAnchor.transform.position),
-              let result = arView.raycast(from: pointInView, allowing: .existingPlaneInfinite, alignment: .horizontal).first else { return }
-        
-        let anchor = AnchorEntity(world: arImageAnchor.transform)
-        anchor.setPosition(result.worldTransform.position, relativeTo: nil)
-        anchor.name = "imageAnchor"
-        
-        let imageWitdh = Float(arImageAnchor.referenceImage.physicalSize.width)
-        let imageHeigth = Float(arImageAnchor.referenceImage.physicalSize.height)
-        let model = ModelEntity(mesh: .generatePlane(width: imageWitdh * Float(arImageAnchor.estimatedScaleFactor), depth: imageHeigth * Float(arImageAnchor.estimatedScaleFactor)),
-                                materials: [SimpleMaterial(color: .init(red: 0, green: 1, blue: 0, alpha: 0.5), isMetallic: false)])
-        model.collision = .init(shapes: [.generateBox(size: .zero)])
-        model.name = "imageModel"
-        
-        anchor.addChild(model)
-        arView.scene.addAnchor(anchor)
-    }
-    
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
-        guard let arImageAnchor = anchors.compactMap({ $0 as? ARImageAnchor }).first,
-              let arView = self.arView else { return }
+        guard let arView = self.arView else { return }
         
-        guard let pointInView = arView.project(arImageAnchor.transform.position),
-              let result = arView.raycast(from: pointInView, allowing: .existingPlaneInfinite, alignment: .horizontal).first else { return }
-        
-        guard let imageAnchor = arView.scene.findEntity(named: "imageAnchor") as? AnchorEntity else { return }
-        imageAnchor.setPosition(result.worldTransform.position, relativeTo: nil)
-        imageAnchor.setOrientation(.init(arImageAnchor.transform), relativeTo: nil)
-        
-        guard let imageModel = arView.scene.findEntity(named: "imageModel") as? ModelEntity else { return }
-        let imageWidth = Float(arImageAnchor.referenceImage.physicalSize.width)
-        let imageHeight = Float(arImageAnchor.referenceImage.physicalSize.height)
-        imageModel.model?.mesh = .generatePlane(width: imageWidth * Float(arImageAnchor.estimatedScaleFactor), depth: imageHeight * Float(arImageAnchor.estimatedScaleFactor))
+        for imageAnchor in anchors.compactMap({ $0 as? ARImageAnchor }) {
+            if let pointInView = arView.project(imageAnchor.transform.position),
+               let raycastResult = arView.raycast(from: pointInView, allowing: .existingPlaneInfinite, alignment: .horizontal).first {
+                
+                // Estrarre la rotazione dal raycast (solo per l'asse Y)
+                let raycastRotation = simd_float3x3(raycastResult.worldTransform.columns.0.xyz,
+                                                    raycastResult.worldTransform.columns.1.xyz,
+                                                    raycastResult.worldTransform.columns.2.xyz)
+                
+                // Estrarre la rotazione dall'immagine
+                let imageRotation = simd_float3x3(imageAnchor.transform.columns.0.xyz,
+                                                  imageAnchor.transform.columns.1.xyz,
+                                                  imageAnchor.transform.columns.2.xyz)
+                
+                // Creare una nuova matrice di rotazione
+                var hybridRotation = imageRotation
+                hybridRotation.columns.1 = raycastRotation.columns.1  // Usa l'asse Y del raycast
+                
+                // Normalizzare la matrice di rotazione per assicurarsi che sia ortogonale
+                hybridRotation = hybridRotation.orthonormalized()
+                
+                // Creare la nuova matrice di trasformazione 4x4
+                let hybridTransform = simd_float4x4(
+                    SIMD4<Float>(hybridRotation.columns.0, 0),
+                    SIMD4<Float>(hybridRotation.columns.1, 0),
+                    SIMD4<Float>(hybridRotation.columns.2, 0),
+                    SIMD4<Float>(raycastResult.worldTransform.columns.3)
+                )
+                
+                // Aggiornare o creare l'ancoraggio
+                if let anchor = arView.scene.findEntity(named: "hybridAnchor") as? AnchorEntity {
+                    anchor.setTransformMatrix(hybridTransform, relativeTo: nil)
+                } else {
+                    let anchor = AnchorEntity(world: hybridTransform)
+                    anchor.name = "hybridAnchor"
+                    let model = ModelEntity(mesh: .generateBox(size: 0.1),
+                                            materials: [SimpleMaterial(color: .red.withAlphaComponent(0.5), isMetallic: false)])
+                    anchor.addChild(model)
+                    arView.scene.addAnchor(anchor)
+                }
+                
+                print("Hybrid transform: \(hybridTransform)")
+            }
+        }
     }
 }

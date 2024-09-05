@@ -9,22 +9,11 @@ import ARKit
 
 extension ARFrame {
     
-    private static var cachedIntrinsics: simd_float3x3?
-    private static var lastCapturedImageSize: CGSize?
-    private static var lastDepthMapSize: CGSize?
-    
     var cameraIntrinsicsInverseForDepthMap: simd_float3x3? {
         guard let depthMap = self.smoothedSceneDepth?.depthMap else { return nil }
         
         let capturedImageSize: CGSize = self.capturedImage.size()
         let depthMapSize: CGSize = depthMap.size()
-        
-        if ARFrame.lastCapturedImageSize == capturedImageSize && ARFrame.lastDepthMapSize == depthMapSize {
-            return ARFrame.cachedIntrinsics
-        }
-        
-        ARFrame.lastCapturedImageSize = capturedImageSize
-        ARFrame.lastDepthMapSize = depthMapSize
         
         var cameraIntrinsics = self.camera.intrinsics
         
@@ -37,8 +26,7 @@ extension ARFrame {
         cameraIntrinsics[2][0] /= scaleRes.x
         cameraIntrinsics[2][1] /= scaleRes.y
         
-        ARFrame.cachedIntrinsics = cameraIntrinsics.inverse
-        return ARFrame.cachedIntrinsics
+        return cameraIntrinsics.inverse
     }
     
     // This one is adapted from:
