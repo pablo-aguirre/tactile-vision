@@ -23,6 +23,7 @@ struct ARViewContainer: UIViewRepresentable {
     func makeCoordinator() -> Coordinator { Coordinator(arSettings: arSettings) }
     
     private func configureSession(in arView: ARView) {
+        arView.automaticallyConfigureSession = false
         let configuration = ARWorldTrackingConfiguration()
         
         guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {

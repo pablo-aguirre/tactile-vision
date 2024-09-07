@@ -20,7 +20,7 @@ struct MainScreen: View {
                 .ignoresSafeArea()
             VStack {
                 HStack {
-                    Text("Distance sphere-plane: \((arSettings.distance * 100).formatted(.number.precision(.fractionLength(1)))) cm").foregroundStyle(.white)
+                    Text("Distance index-table: \((arSettings.distance * 100).formatted(.number.precision(.fractionLength(1)))) cm").foregroundStyle(.white)
                 }
                 HStack {
                     Text("x: \((arSettings.coords * 100).x.formatted(.number.precision(.fractionLength(1)))) cm").foregroundStyle(.red)

@@ -10,10 +10,10 @@ import RealityKit
 import ARKit
 
 class ARSettings: ObservableObject {
-    @Published var debugOptions: ARView.DebugOptions = []
-    @Published var environmentOptions: ARView.Environment.SceneUnderstanding.Options = [.physics]
-    @Published var frameOptions: ARConfiguration.FrameSemantics = [.smoothedSceneDepth]
-    @Published var sceneOptions: ARConfiguration.SceneReconstruction = [.mesh, .meshWithClassification]
+    @Published var debugOptions: ARView.DebugOptions = [.showSceneUnderstanding]
+    @Published var environmentOptions: ARView.Environment.SceneUnderstanding.Options = [.collision]
+    @Published var frameOptions: ARConfiguration.FrameSemantics = [.smoothedSceneDepth, .personSegmentationWithDepth]
+    @Published var sceneOptions: ARConfiguration.SceneReconstruction = [.mesh]
     @Published var planeOptions: ARWorldTrackingConfiguration.PlaneDetection = [.horizontal]
     
     @Published var radius: Float = 0.005
