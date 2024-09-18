@@ -1,0 +1,15 @@
+{
+  "originHash" : "1ac818eaff2149be653062f8bdb2ba48a30253370fefd22cc563688eef676a05",
+  "pins" : [
+    {
+      "identity" : "bluedress",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:noppefoxwolf/BlueDress.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "41abb406180279933c7333dad7694ec02692d305"
+      }
+    }
+  ],
+  "version" : 3
+}

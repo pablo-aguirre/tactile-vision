@@ -4,47 +4,53 @@ import ARKit
 import Combine
 
 struct ARViewContainer: UIViewRepresentable {
-    @EnvironmentObject private var arSettings: ARSettings
+    @StateObject private var settingsManager: ARSettingsCoordinator
+    let mediaPipeModel: MediaPipeModel
+    let arSettings: ARSettings
+    
+    init(arSettings: ARSettings, mediaPipeModel: MediaPipeModel) {
+        _settingsManager = StateObject(wrappedValue: ARSettingsCoordinator(arSettings: arSettings))
+        self.arSettings = arSettings
+        self.mediaPipeModel = mediaPipeModel
+    }
     
     func makeUIView(context: Context) -> ARView {
         let arView = ARView(frame: .zero)
-
+        settingsManager.arView = arView
+        
         arView.session.delegate = context.coordinator
-        //arView.session.delegateQueue = .global(qos: .userInteractive)
-
-        context.coordinator.arView = arView
-        context.coordinator.setup()
+        arView.session.delegateQueue = .global(qos: .userInteractive)
+        
         configureSession(in: arView)
+        
         return arView
     }
-
+    
     func updateUIView(_ uiView: ARView, context: Context) {}
     
-    func makeCoordinator() -> Coordinator { Coordinator(arSettings: arSettings) }
+    func makeCoordinator() -> MediaPipeCoordinator { MediaPipeCoordinator(model: mediaPipeModel) }
     
     private func configureSession(in arView: ARView) {
-        arView.automaticallyConfigureSession = false
         let configuration = ARWorldTrackingConfiguration()
         
-        guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
-            fatalError("Missing images resources.")
-        }
-        configuration.detectionImages = referenceImages
-        configuration.maximumNumberOfTrackedImages = 1
-        configuration.automaticImageScaleEstimationEnabled = true
+        //guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
+        //    fatalError("Missing images resources.")
+        //}
+        //configuration.detectionImages = referenceImages
+        //configuration.maximumNumberOfTrackedImages = 1
+        //configuration.automaticImageScaleEstimationEnabled = true
         
-        /// set 30 fps to reduce overhead on vision framework
-        if let videoFormat = ARWorldTrackingConfiguration.supportedVideoFormats.first(where: { $0.framesPerSecond == 30 }) {
+        if let videoFormat = ARWorldTrackingConfiguration.supportedVideoFormats.first(where: { $0.framesPerSecond == arSettings.fps }) {
             configuration.videoFormat = videoFormat
-            print("Configured frames per second to 30 fps")
+            print("Configured frames per second to \(arSettings.fps) fps")
         }
         
         arView.debugOptions = arSettings.debugOptions
-        arView.environment.sceneUnderstanding.options = arSettings.environmentOptions
-        configuration.frameSemantics = arSettings.frameOptions
-        configuration.sceneReconstruction = arSettings.sceneOptions
-        configuration.planeDetection = arSettings.planeOptions
+        arView.environment.sceneUnderstanding.options = arSettings.sceneUnderstandingOptions
+        configuration.frameSemantics = arSettings.frameSemantics
+        configuration.sceneReconstruction = arSettings.sceneReconstruction
+        configuration.planeDetection = arSettings.planeDetection
+        
         arView.session.run(configuration)
     }
-    
 }

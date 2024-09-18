@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		138BF415C613174DC83867AB /* Pods_Tactile_Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8DC3F3E0E4B7A9669C8AADC /* Pods_Tactile_Vision.framework */; };
+		6E0309A82C99BA4900A575B3 /* MediaPipeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0309A72C99BA4900A575B3 /* MediaPipeCoordinator.swift */; };
+		6E0309AB2C99BA6F00A575B3 /* GestureRecognizerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0309AA2C99BA6F00A575B3 /* GestureRecognizerService.swift */; };
+		6E0309AD2C99BBF000A575B3 /* gesture_recognizer.task in Resources */ = {isa = PBXBuildFile; fileRef = 6E0309AC2C99BBF000A575B3 /* gesture_recognizer.task */; };
 		6E1A6BEE2C612AC900490E16 /* TactileVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1A6BED2C612AC900490E16 /* TactileVisionApp.swift */; };
 		6E1A6BF02C612AC900490E16 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1A6BEF2C612AC900490E16 /* MainScreen.swift */; };
 		6E1A6BF22C612ACB00490E16 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E1A6BF12C612ACB00490E16 /* Assets.xcassets */; };
@@ -17,15 +21,35 @@
 		6E55D9492C628F8500EC1068 /* ARView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E55D9482C628F8500EC1068 /* ARView+Extensions.swift */; };
 		6E55D94D2C64F1A000EC1068 /* ARConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E55D94C2C64F1A000EC1068 /* ARConfiguration+Extensions.swift */; };
 		6E55D94F2C65118F00EC1068 /* ARWorldTrackingConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E55D94E2C65118F00EC1068 /* ARWorldTrackingConfiguration+Extensions.swift */; };
-		6E6A88762C68A0B600BA2103 /* ARCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A88752C68A0B600BA2103 /* ARCoordinator.swift */; };
+		6E6A88762C68A0B600BA2103 /* VisionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A88752C68A0B600BA2103 /* VisionCoordinator.swift */; };
 		6E6A88782C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A88772C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift */; };
 		6E6A887A2C68AADB00BA2103 /* ARFrame+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A88792C68AADB00BA2103 /* ARFrame+Extensions.swift */; };
-		6E6A887C2C69FEB200BA2103 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A887B2C69FEB200BA2103 /* SettingsScreen.swift */; };
 		6E6A88802C6DF03300BA2103 /* simd_float4x4+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A887F2C6DF03300BA2103 /* simd_float4x4+Extensions.swift */; };
+		6E6C225B2C9AC3CB007F602E /* BlueDress in Frameworks */ = {isa = PBXBuildFile; productRef = 6E6C225A2C9AC3CB007F602E /* BlueDress */; };
+		6E6C225D2C9B3360007F602E /* ARSettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C225C2C9B3360007F602E /* ARSettingsCoordinator.swift */; };
+		6E6C225F2C9B3511007F602E /* Binding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C225E2C9B3510007F602E /* Binding+Extensions.swift */; };
+		6E6C22612C9B35CC007F602E /* MediaPipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C22602C9B35CC007F602E /* MediaPipeView.swift */; };
+		6E6C22632C9B37DB007F602E /* MediaPipe+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C22622C9B37DB007F602E /* MediaPipe+Extensions.swift */; };
 		6E7C4E9F2C81BECF005859FF /* CustomButtom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C4E9E2C81BECF005859FF /* CustomButtom.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		6E6C22582C9AC39A007F602E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		6E0309A72C99BA4900A575B3 /* MediaPipeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPipeCoordinator.swift; sourceTree = "<group>"; };
+		6E0309AA2C99BA6F00A575B3 /* GestureRecognizerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureRecognizerService.swift; sourceTree = "<group>"; };
+		6E0309AC2C99BBF000A575B3 /* gesture_recognizer.task */ = {isa = PBXFileReference; lastKnownFileType = file; path = gesture_recognizer.task; sourceTree = "<group>"; };
 		6E1A6BEA2C612AC900490E16 /* Tactile Vision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tactile Vision.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E1A6BED2C612AC900490E16 /* TactileVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TactileVisionApp.swift; sourceTree = "<group>"; };
 		6E1A6BEF2C612AC900490E16 /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
@@ -37,12 +61,18 @@
 		6E55D9482C628F8500EC1068 /* ARView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARView+Extensions.swift"; sourceTree = "<group>"; };
 		6E55D94C2C64F1A000EC1068 /* ARConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARConfiguration+Extensions.swift"; sourceTree = "<group>"; };
 		6E55D94E2C65118F00EC1068 /* ARWorldTrackingConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARWorldTrackingConfiguration+Extensions.swift"; sourceTree = "<group>"; };
-		6E6A88752C68A0B600BA2103 /* ARCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARCoordinator.swift; sourceTree = "<group>"; };
+		6E6A88752C68A0B600BA2103 /* VisionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionCoordinator.swift; sourceTree = "<group>"; };
 		6E6A88772C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CVPixelBuffer+Extensions.swift"; sourceTree = "<group>"; };
 		6E6A88792C68AADB00BA2103 /* ARFrame+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARFrame+Extensions.swift"; sourceTree = "<group>"; };
-		6E6A887B2C69FEB200BA2103 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		6E6A887F2C6DF03300BA2103 /* simd_float4x4+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "simd_float4x4+Extensions.swift"; sourceTree = "<group>"; };
+		6E6C225C2C9B3360007F602E /* ARSettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSettingsCoordinator.swift; sourceTree = "<group>"; };
+		6E6C225E2C9B3510007F602E /* Binding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extensions.swift"; sourceTree = "<group>"; };
+		6E6C22602C9B35CC007F602E /* MediaPipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPipeView.swift; sourceTree = "<group>"; };
+		6E6C22622C9B37DB007F602E /* MediaPipe+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaPipe+Extensions.swift"; sourceTree = "<group>"; };
 		6E7C4E9E2C81BECF005859FF /* CustomButtom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtom.swift; sourceTree = "<group>"; };
+		8737E3B5A129D7A982BBFAD1 /* Pods-Tactile Vision.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tactile Vision.debug.xcconfig"; path = "Target Support Files/Pods-Tactile Vision/Pods-Tactile Vision.debug.xcconfig"; sourceTree = "<group>"; };
+		A8DC3F3E0E4B7A9669C8AADC /* Pods_Tactile_Vision.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tactile_Vision.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8BEC5C087DDBDDC527E7E5F /* Pods-Tactile Vision.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tactile Vision.release.xcconfig"; path = "Target Support Files/Pods-Tactile Vision/Pods-Tactile Vision.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,17 +80,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E6C225B2C9AC3CB007F602E /* BlueDress in Frameworks */,
+				138BF415C613174DC83867AB /* Pods_Tactile_Vision.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6E0309A92C99BA5700A575B3 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				6E0309AA2C99BA6F00A575B3 /* GestureRecognizerService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		6E1A6BE12C612AC900490E16 = {
 			isa = PBXGroup;
 			children = (
 				6E1A6BEC2C612AC900490E16 /* Tactile Vision */,
 				6E1A6BEB2C612AC900490E16 /* Products */,
+				BC5653ADFCD331002D5FF82E /* Pods */,
+				83C9616E2C2E264513A54023 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -75,11 +117,13 @@
 		6E1A6BEC2C612AC900490E16 /* Tactile Vision */ = {
 			isa = PBXGroup;
 			children = (
+				6E0309AC2C99BBF000A575B3 /* gesture_recognizer.task */,
 				6E1A6BED2C612AC900490E16 /* TactileVisionApp.swift */,
 				6E7C4E9D2C81BCC4005859FF /* Screens */,
 				6E1A6BFB2C612B0F00490E16 /* Views */,
 				6E1A6BFC2C612B3600490E16 /* Models */,
 				6E6A88742C689FF000BA2103 /* Coordinators */,
+				6E0309A92C99BA5700A575B3 /* Services */,
 				6E55D9472C628F0400EC1068 /* Extensions */,
 				6E1A6BF12C612ACB00490E16 /* Assets.xcassets */,
 				6E1A6BF32C612ACB00490E16 /* Preview Content */,
@@ -100,6 +144,7 @@
 			children = (
 				6E1A6BFD2C612B6600490E16 /* ARViewContainer.swift */,
 				6E7C4E9E2C81BECF005859FF /* CustomButtom.swift */,
+				6E6C22602C9B35CC007F602E /* MediaPipeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -115,12 +160,14 @@
 		6E55D9472C628F0400EC1068 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				6E6C225E2C9B3510007F602E /* Binding+Extensions.swift */,
 				6E55D9482C628F8500EC1068 /* ARView+Extensions.swift */,
 				6E55D94C2C64F1A000EC1068 /* ARConfiguration+Extensions.swift */,
 				6E55D94E2C65118F00EC1068 /* ARWorldTrackingConfiguration+Extensions.swift */,
 				6E6A88772C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift */,
 				6E6A88792C68AADB00BA2103 /* ARFrame+Extensions.swift */,
 				6E6A887F2C6DF03300BA2103 /* simd_float4x4+Extensions.swift */,
+				6E6C22622C9B37DB007F602E /* MediaPipe+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -128,7 +175,9 @@
 		6E6A88742C689FF000BA2103 /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
-				6E6A88752C68A0B600BA2103 /* ARCoordinator.swift */,
+				6E6C225C2C9B3360007F602E /* ARSettingsCoordinator.swift */,
+				6E6A88752C68A0B600BA2103 /* VisionCoordinator.swift */,
+				6E0309A72C99BA4900A575B3 /* MediaPipeCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -138,9 +187,25 @@
 			children = (
 				6E1A6BEF2C612AC900490E16 /* MainScreen.swift */,
 				6E1A6BFF2C612BBD00490E16 /* ARSettingsScreen.swift */,
-				6E6A887B2C69FEB200BA2103 /* SettingsScreen.swift */,
 			);
 			path = Screens;
+			sourceTree = "<group>";
+		};
+		83C9616E2C2E264513A54023 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A8DC3F3E0E4B7A9669C8AADC /* Pods_Tactile_Vision.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BC5653ADFCD331002D5FF82E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8737E3B5A129D7A982BBFAD1 /* Pods-Tactile Vision.debug.xcconfig */,
+				E8BEC5C087DDBDDC527E7E5F /* Pods-Tactile Vision.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,9 +215,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6E1A6BF82C612ACB00490E16 /* Build configuration list for PBXNativeTarget "Tactile Vision" */;
 			buildPhases = (
+				F94A3C8B353A79E327DA2C6C /* [CP] Check Pods Manifest.lock */,
 				6E1A6BE62C612AC900490E16 /* Sources */,
 				6E1A6BE72C612AC900490E16 /* Frameworks */,
 				6E1A6BE82C612AC900490E16 /* Resources */,
+				6E6C22582C9AC39A007F602E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -187,6 +254,9 @@
 				Base,
 			);
 			mainGroup = 6E1A6BE12C612AC900490E16;
+			packageReferences = (
+				6E6C22592C9AC3CB007F602E /* XCRemoteSwiftPackageReference "BlueDress" */,
+			);
 			productRefGroup = 6E1A6BEB2C612AC900490E16 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -201,6 +271,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E0309AD2C99BBF000A575B3 /* gesture_recognizer.task in Resources */,
 				6E1A6BF52C612ACB00490E16 /* Preview Assets.xcassets in Resources */,
 				6E1A6BF22C612ACB00490E16 /* Assets.xcassets in Resources */,
 			);
@@ -208,25 +279,55 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		F94A3C8B353A79E327DA2C6C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Tactile Vision-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		6E1A6BE62C612AC900490E16 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				6E6A88802C6DF03300BA2103 /* simd_float4x4+Extensions.swift in Sources */,
+				6E0309AB2C99BA6F00A575B3 /* GestureRecognizerService.swift in Sources */,
 				6E55D94D2C64F1A000EC1068 /* ARConfiguration+Extensions.swift in Sources */,
 				6E55D94F2C65118F00EC1068 /* ARWorldTrackingConfiguration+Extensions.swift in Sources */,
 				6E1A6C002C612BBD00490E16 /* ARSettingsScreen.swift in Sources */,
 				6E1A6BF02C612AC900490E16 /* MainScreen.swift in Sources */,
 				6E1A6BEE2C612AC900490E16 /* TactileVisionApp.swift in Sources */,
-				6E6A887C2C69FEB200BA2103 /* SettingsScreen.swift in Sources */,
+				6E0309A82C99BA4900A575B3 /* MediaPipeCoordinator.swift in Sources */,
+				6E6C22632C9B37DB007F602E /* MediaPipe+Extensions.swift in Sources */,
 				6E55D9492C628F8500EC1068 /* ARView+Extensions.swift in Sources */,
 				6E1A6BFE2C612B6600490E16 /* ARViewContainer.swift in Sources */,
 				6E6A887A2C68AADB00BA2103 /* ARFrame+Extensions.swift in Sources */,
+				6E6C225F2C9B3511007F602E /* Binding+Extensions.swift in Sources */,
 				6E1A6C022C612BDF00490E16 /* ARSettings.swift in Sources */,
-				6E6A88762C68A0B600BA2103 /* ARCoordinator.swift in Sources */,
+				6E6A88762C68A0B600BA2103 /* VisionCoordinator.swift in Sources */,
 				6E6A88782C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift in Sources */,
+				6E6C225D2C9B3360007F602E /* ARSettingsCoordinator.swift in Sources */,
 				6E7C4E9F2C81BECF005859FF /* CustomButtom.swift in Sources */,
+				6E6C22612C9B35CC007F602E /* MediaPipeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,6 +455,7 @@
 		};
 		6E1A6BF92C612ACB00490E16 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8737E3B5A129D7A982BBFAD1 /* Pods-Tactile Vision.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -370,6 +472,7 @@
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = "\"\" arkit";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -385,6 +488,7 @@
 		};
 		6E1A6BFA2C612ACB00490E16 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E8BEC5C087DDBDDC527E7E5F /* Pods-Tactile Vision.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -401,6 +505,7 @@
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = "\"\" arkit";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -436,6 +541,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6E6C22592C9AC3CB007F602E /* XCRemoteSwiftPackageReference "BlueDress" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:noppefoxwolf/BlueDress.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6E6C225A2C9AC3CB007F602E /* BlueDress */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6E6C22592C9AC3CB007F602E /* XCRemoteSwiftPackageReference "BlueDress" */;
+			productName = BlueDress;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6E1A6BE22C612AC900490E16 /* Project object */;
 }

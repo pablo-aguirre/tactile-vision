@@ -4,86 +4,46 @@
 //
 //  Created by Pablo Aguirre on 05/08/24.
 //
-
 import SwiftUI
 import RealityKit
 import ARKit
 
 struct ARSettingsScreen: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var settings: ARSettings
+    @EnvironmentObject private var arSettings: ARSettings
     
     var body: some View {
         List {
             Section("Debug Options") {
                 ForEach(ARView.DebugOptions.allOptions, id: \.rawValue) { option in
-                    Toggle(option.description, isOn: Binding(
-                        get: { settings.debugOptions.contains(option) },
-                        set: { toggleEnabled in
-                            if toggleEnabled {
-                                settings.debugOptions.insert(option)
-                            } else {
-                                settings.debugOptions.remove(option)
-                            }
-                        })
-                    )
+                    Toggle(option.description, isOn: $arSettings.debugOptions.bind(option))
                 }
             }
             Section("Environment options") {
                 ForEach(ARView.Environment.SceneUnderstanding.Options.allOptions, id: \.rawValue) { option in
-                    Toggle(option.description, isOn: Binding(
-                        get: { settings.environmentOptions.contains(option) },
-                        set: { toggleEnabled in
-                            if toggleEnabled {
-                                settings.environmentOptions.insert(option)
-                            } else {
-                                settings.environmentOptions.remove(option)
-                            }
-                        })
-                    )
+                    Toggle(option.description, isOn: $arSettings.sceneUnderstandingOptions.bind(option))
                 }
             }
             Section("Frame semantics") {
                 ForEach(ARConfiguration.FrameSemantics.allOptions, id: \.rawValue) { option in
-                    Toggle(option.description, isOn: Binding(
-                        get: { settings.frameOptions.contains(option) },
-                        set: { toggleEnabled in
-                            if toggleEnabled && ARWorldTrackingConfiguration.supportsFrameSemantics(option.union(settings.frameOptions)) {
-                                settings.frameOptions.insert(option)
-                            } else if ARWorldTrackingConfiguration.supportsFrameSemantics(option.subtracting(settings.frameOptions)){
-                                settings.frameOptions.remove(option)
-                            }
-                        })
-                    )
+                    Toggle(option.description, isOn: $arSettings.frameSemantics.bind(option))
                 }
             }
             Section("Scene reconstruction") {
                 ForEach(ARConfiguration.SceneReconstruction.allOptions, id: \.rawValue) { option in
-                    Toggle(option.description, isOn: Binding(
-                        get: { settings.sceneOptions.contains(option) },
-                        set: { toggleEnabled in
-                            if toggleEnabled && ARWorldTrackingConfiguration.supportsSceneReconstruction(option.union(settings.sceneOptions)) {
-                                settings.sceneOptions.insert(option)
-                            } else if ARWorldTrackingConfiguration.supportsSceneReconstruction(settings.sceneOptions.subtracting(option)){
-                                settings.sceneOptions.remove(option)
-                            }
-                        })
-                    )
+                    Toggle(option.description, isOn: $arSettings.sceneReconstruction.bind(option))
                 }
             }
             Section("Plane detection") {
                 ForEach(ARWorldTrackingConfiguration.PlaneDetection.allOptions, id: \.rawValue) { option in
-                    Toggle(option.description, isOn: Binding(
-                        get: { settings.planeOptions.contains(option) },
-                        set: { toggleEnabled in
-                            if toggleEnabled {
-                                settings.planeOptions.insert(option)
-                            } else {
-                                settings.planeOptions.remove(option)
-                            }
-                        })
-                    )
+                    Toggle(option.description, isOn: $arSettings.planeDetection.bind(option))
                 }
+            }
+            Section("FPS") {
+                Picker("Frame per second", selection: $arSettings.fps) {
+                    Text("30").tag(30)
+                    Text("60").tag(60)
+                }.pickerStyle(.segmented)
             }
         }
         .navigationTitle("AR Settings")
@@ -98,9 +58,5 @@ struct ARSettingsScreen: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        ARSettingsScreen()
-            .environmentObject(ARSettings())
-    }
-}
+
+

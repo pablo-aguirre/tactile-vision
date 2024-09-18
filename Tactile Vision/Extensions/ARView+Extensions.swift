@@ -7,10 +7,11 @@
 
 import RealityKit
 
-extension ARView.DebugOptions: Hashable {
+extension ARView.DebugOptions {
     static var allOptions: [ARView.DebugOptions] {
         return [
             .showPhysics,
+            .showStatistics,
             .showAnchorOrigins,
             .showAnchorGeometry,
             .showWorldOrigin,
@@ -22,6 +23,7 @@ extension ARView.DebugOptions: Hashable {
     var description: String {
         return switch self {
         case .showPhysics: "Show Physics"
+        case .showStatistics: "Show Statistics"
         case .showAnchorOrigins: "Show Anchor Origins"
         case .showAnchorGeometry: "Show Anchor Geometry"
         case .showWorldOrigin: "Show World Origin"
