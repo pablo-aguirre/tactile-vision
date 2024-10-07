@@ -7,8 +7,6 @@
 
 import MediaPipeTasksVision
 
-
-
 extension ResultCategory {
     var label: String {
         return switch self.categoryName {
@@ -22,5 +20,10 @@ extension ResultCategory {
         default: self.categoryName ?? "❓"
         }
     }
-    
+}
+
+extension NormalizedLandmark {
+    var point: (x: Float, y: Float) {
+        return (x: self.x, y: self.y)
+    }
 }

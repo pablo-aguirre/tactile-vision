@@ -6,6 +6,31 @@
 //
 
 import RealityKit
+import ARKit
+
+extension ARView {
+    
+    func updateOrAddEntity(named entityName: String, at position: SIMD3<Float>, radius: Float = 0.005, color: UIColor = .green) {
+        if let existingEntity = self.scene.findEntity(named: entityName) {
+            existingEntity.setPosition(position, relativeTo: nil)
+        } else {
+            DispatchQueue.main.async {
+                let anchorEntity = AnchorEntity(world: position)
+                anchorEntity.name = entityName
+                
+                let modelEntity = ModelEntity(
+                    mesh: .generateSphere(radius: radius),
+                    materials: [SimpleMaterial(color: color, isMetallic: false)]
+                )
+                
+                anchorEntity.addChild(modelEntity)
+                
+                self.scene.addAnchor(anchorEntity)
+            }
+        }
+    }
+    
+}
 
 extension ARView.DebugOptions {
     static var allOptions: [ARView.DebugOptions] {

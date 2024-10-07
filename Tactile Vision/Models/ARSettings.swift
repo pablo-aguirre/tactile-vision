@@ -10,10 +10,10 @@ import RealityKit
 import ARKit
 
 class ARSettings: ObservableObject {
-    @Published var debugOptions: ARView.DebugOptions = []
-    @Published var sceneUnderstandingOptions: ARView.Environment.SceneUnderstanding.Options = []
-    @Published var frameSemantics: ARConfiguration.FrameSemantics = []
-    @Published var sceneReconstruction: ARConfiguration.SceneReconstruction = []
-    @Published var planeDetection: ARWorldTrackingConfiguration.PlaneDetection = []
+    @Published var debugOptions: ARView.DebugOptions = [.showSceneUnderstanding]
+    @Published var sceneUnderstandingOptions: ARView.Environment.SceneUnderstanding.Options = [.collision]
+    @Published var frameSemantics: ARConfiguration.FrameSemantics = [.smoothedSceneDepth]
+    @Published var sceneReconstruction: ARConfiguration.SceneReconstruction = [.mesh]
+    @Published var planeDetection: ARWorldTrackingConfiguration.PlaneDetection = [.horizontal, .vertical]
     @Published var fps: Int = 30
 }

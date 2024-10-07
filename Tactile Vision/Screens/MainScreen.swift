@@ -32,7 +32,7 @@ struct MainScreen: View {
             NavigationStack {
                 ARSettingsScreen()
                     .environmentObject(arSettings)
-            }.presentationDetents([.medium, .large])
+            }.presentationDetents([.medium])
         }
     }
 }

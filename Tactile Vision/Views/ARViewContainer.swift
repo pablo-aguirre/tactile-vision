@@ -16,6 +16,7 @@ struct ARViewContainer: UIViewRepresentable {
     
     func makeUIView(context: Context) -> ARView {
         let arView = ARView(frame: .zero)
+        context.coordinator.arView = arView
         settingsManager.arView = arView
         
         arView.session.delegate = context.coordinator

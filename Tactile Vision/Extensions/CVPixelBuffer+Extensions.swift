@@ -17,24 +17,24 @@ extension CVPixelBuffer {
     ///
     /// - Parameter plane: The index of the plane whose size you want to retrieve. Defaults to `0`.
     /// - Returns: A `CGSize` representing the width and height of the specified plane.
-    func size(ofPlane plane: Int = 0) -> CGSize {
+    func size(ofPlane plane: Int = 0) -> (width: Float, height: Float) {
         let width = CVPixelBufferGetWidthOfPlane(self, plane)
         let height = CVPixelBufferGetHeightOfPlane(self, plane)
-        return .init(width: width, height: height)
+        return (Float(width), Float(height))
     }
     
     /// Retrieves a value from the pixel buffer at the specified normalized coordinates.
     ///
     /// - Parameters:
-    ///   - point: The normalized coordinates of the point where (0,0) is in the Top-Left, (1,1) in the Bottom-Right.
-    ///   - as: The type of value you want to retrieve (e.g., `Float.self`, `UInt8.self`).
+    ///   - point: The normalized coordinates of the point where (0,0) is in the Top-Right and (1,1) in the Bottom-Left.
+    ///   - type: The type of value you want to retrieve (e.g., `Float.self`, `UInt8.self`).
     /// - Returns: The value at the specified point, or `nil` if the point is out of bounds or the pixel format type does not match.
-    func value<T>(at point: CGPoint, as type: T.Type) -> T? {
+    func value<T>(at point: (x: Float, y: Float), as type: T.Type) -> T? {
         guard let expectedPixelFormatType = pixelFormatType(for: type),
               CVPixelBufferGetPixelFormatType(self) == expectedPixelFormatType,
-              let (column, row) = pixelCoordinates(from: point) else { return nil }
+              let (column, row) = pixelCoordinates(at: (point.x, point.y)) else { return nil }
         
-        return pixelBufferValue(column: column, row: row, as: type)
+        return pixelBufferValue(at: (column, row), as: type)
     }
     
     /// Determines the pixel format type for a given type.
@@ -47,24 +47,24 @@ extension CVPixelBuffer {
             return kCVPixelFormatType_DepthFloat32
         case is UInt8.Type:
             return kCVPixelFormatType_OneComponent8
-            // Add more cases as needed
-        default:
+        default: // Add more cases as needed
             return nil
         }
     }
     
-    /// Calculates pixel coordinates from normalized coordinates.
+    /// Calculates pixel coordinates from normalized coordinates, where the point (0,0) is in the Top-Right and (1,1) in the Bottom-Left.
     ///
-    /// - Parameter point: The normalized coordinates of the point (0,0) is in the Top-Left, (1,1) in the Bottom-Right.
+    /// - Parameters:
+    ///     - point:  The normalized coordinates, x and y must be between 0 and 1.
     /// - Returns: A tuple containing the column and row pixel coordinates, or `nil` if the point is out of bounds.
-    private func pixelCoordinates(from point: CGPoint) -> (column: Int, row: Int)? {
-        guard point.x >= 0, point.x <= 1, point.y >= 0, point.y <= 1 else { return nil }
+    func pixelCoordinates(at point: (x: Float, y: Float)) -> (column: Int, row: Int)? {
+        guard point.x >= 0 && point.x <= 1, point.y >= 0 && point.y <= 1 else { return nil }
         
         let width = CVPixelBufferGetWidth(self)
         let height = CVPixelBufferGetHeight(self)
         
-        let column = Int(point.x * CGFloat(width))
-        let row = Int((1 - point.y) * CGFloat(height))
+        let column = Int(point.x * Float(width))
+        let row = Int(point.y * Float(height))
         
         return (column, row)
     }
@@ -76,16 +76,15 @@ extension CVPixelBuffer {
     ///   - row: The row index.
     ///   - type: The type of value to retrieve (e.g., `Float.self`, `UInt8.self`).
     /// - Returns: The value at the specified coordinates, or `nil` if the buffer is inaccessible.
-    private func pixelBufferValue<T>(column: Int, row: Int, as type: T.Type) -> T? {
+    private func pixelBufferValue<T>(at pixel: (column: Int, row: Int), as type: T.Type) -> T? {
         CVPixelBufferLockBaseAddress(self, .readOnly)
         defer { CVPixelBufferUnlockBaseAddress(self, .readOnly) }
         
-        guard let baseAddress = CVPixelBufferGetBaseAddress(self) else { return nil }
+        guard let baseAddress = CVPixelBufferGetBaseAddress(self)?.assumingMemoryBound(to: type) else { return nil }
         
         let width = CVPixelBufferGetWidth(self)
-        let index = column + (row * width)
-        let offset = index * MemoryLayout<T>.stride
+        let index = pixel.column + (pixel.row * width)
         
-        return baseAddress.load(fromByteOffset: offset, as: T.self)
+        return baseAddress[index]
     }
 }
