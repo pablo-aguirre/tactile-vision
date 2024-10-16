@@ -11,20 +11,25 @@ import ARKit
 
 struct MainScreen: View {
     @State private var showARSettings: Bool = false
-    @State private var mediaPipeModel = MediaPipeModel()
+    @State private var showHandTrackingSettings: Bool = false
+    @State private var handTrackingSettings = HandTrackingSettings()
     @StateObject private var arSettings = ARSettings()
     
     var body: some View {
-        ZStack(alignment: .topLeading) {
-            ARViewContainer(arSettings: arSettings, mediaPipeModel: mediaPipeModel)
+        ZStack {
+            ARViewContainer(arSettings: arSettings, handTrackingSettings: handTrackingSettings)
                 .ignoresSafeArea()
-            CustomButtom(label: "Settings", systemImage: "arkit") { showARSettings.toggle() }.padding()
+                .overlay { Circle().frame(width: 5, height: 5) }
             VStack {
+                Text(handTrackingSettings.gesture)
+                    .padding()
+                    .background(.secondary)
+                    .clipShape(RoundedRectangle(cornerSize: .init(width: 15, height: 15)))
                 Spacer()
                 HStack {
+                    CustomButton(systemImage: "arkit") { showARSettings.toggle() }
                     Spacer()
-                    MediaPipeView(model: mediaPipeModel)
-                    Spacer()
+                    CustomButton(systemImage: "hand.point.up.left") { showHandTrackingSettings.toggle() }
                 }
             }.padding()
         }
@@ -33,6 +38,12 @@ struct MainScreen: View {
                 ARSettingsScreen()
                     .environmentObject(arSettings)
             }.presentationDetents([.medium])
+        }
+        .sheet(isPresented: $showHandTrackingSettings) {
+            NavigationStack {
+                HandTrackingSettingsScreen()
+                    .environment(handTrackingSettings)
+            }.presentationDetents([.fraction(0.35)])
         }
     }
 }

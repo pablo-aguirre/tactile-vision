@@ -10,11 +10,19 @@ import ARKit
 
 extension ARView {
     
-    func updateOrAddEntity(named entityName: String, at position: SIMD3<Float>, radius: Float = 0.005, color: UIColor = .green) {
-        if let existingEntity = self.scene.findEntity(named: entityName) {
-            existingEntity.setPosition(position, relativeTo: nil)
-        } else {
-            DispatchQueue.main.async {
+    func updateOrAddEntity(
+        named entityName: String,
+        at position: SIMD3<Float>,
+        radius: Float = 0.005,
+        color: UIColor = .green
+    ) {
+        DispatchQueue.main.async {
+            if let existingEntity = self.scene.findEntity(named: entityName) {
+                existingEntity.setPosition(position, relativeTo: nil)
+                if let modelEntity = existingEntity.children.first as? ModelEntity {
+                    modelEntity.model?.materials = [SimpleMaterial(color: color, isMetallic: false)]
+                }
+            } else {
                 let anchorEntity = AnchorEntity(world: position)
                 anchorEntity.name = entityName
                 
@@ -24,7 +32,6 @@ extension ARView {
                 )
                 
                 anchorEntity.addChild(modelEntity)
-                
                 self.scene.addAnchor(anchorEntity)
             }
         }

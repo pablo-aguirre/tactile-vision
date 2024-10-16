@@ -5,13 +5,13 @@ import Combine
 
 struct ARViewContainer: UIViewRepresentable {
     @StateObject private var settingsManager: ARSettingsCoordinator
-    let mediaPipeModel: MediaPipeModel
+    let handTrackingSettings: HandTrackingSettings
     let arSettings: ARSettings
     
-    init(arSettings: ARSettings, mediaPipeModel: MediaPipeModel) {
+    init(arSettings: ARSettings, handTrackingSettings: HandTrackingSettings) {
         _settingsManager = StateObject(wrappedValue: ARSettingsCoordinator(arSettings: arSettings))
         self.arSettings = arSettings
-        self.mediaPipeModel = mediaPipeModel
+        self.handTrackingSettings = handTrackingSettings
     }
     
     func makeUIView(context: Context) -> ARView {
@@ -29,7 +29,9 @@ struct ARViewContainer: UIViewRepresentable {
     
     func updateUIView(_ uiView: ARView, context: Context) {}
     
-    func makeCoordinator() -> MediaPipeCoordinator { MediaPipeCoordinator(model: mediaPipeModel) }
+    func makeCoordinator() -> MediaPipeCoordinator {
+        MediaPipeCoordinator(handTrackingSettings: handTrackingSettings)
+    }
     
     private func configureSession(in arView: ARView) {
         let configuration = ARWorldTrackingConfiguration()

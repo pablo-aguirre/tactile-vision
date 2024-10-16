@@ -24,14 +24,17 @@
 		6E6A88762C68A0B600BA2103 /* VisionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A88752C68A0B600BA2103 /* VisionCoordinator.swift */; };
 		6E6A88782C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A88772C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift */; };
 		6E6A887A2C68AADB00BA2103 /* ARFrame+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A88792C68AADB00BA2103 /* ARFrame+Extensions.swift */; };
-		6E6A88802C6DF03300BA2103 /* simd_float4x4+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A887F2C6DF03300BA2103 /* simd_float4x4+Extensions.swift */; };
+		6E6A88802C6DF03300BA2103 /* simd_float+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6A887F2C6DF03300BA2103 /* simd_float+Extensions.swift */; };
 		6E6C225B2C9AC3CB007F602E /* BlueDress in Frameworks */ = {isa = PBXBuildFile; productRef = 6E6C225A2C9AC3CB007F602E /* BlueDress */; };
 		6E6C225D2C9B3360007F602E /* ARSettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C225C2C9B3360007F602E /* ARSettingsCoordinator.swift */; };
 		6E6C225F2C9B3511007F602E /* Binding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C225E2C9B3510007F602E /* Binding+Extensions.swift */; };
-		6E6C22612C9B35CC007F602E /* MediaPipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C22602C9B35CC007F602E /* MediaPipeView.swift */; };
 		6E6C22632C9B37DB007F602E /* MediaPipe+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C22622C9B37DB007F602E /* MediaPipe+Extensions.swift */; };
 		6E6C22652C9C1822007F602E /* ARDepthData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C22642C9C1822007F602E /* ARDepthData+Extensions.swift */; };
-		6E7C4E9F2C81BECF005859FF /* CustomButtom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C4E9E2C81BECF005859FF /* CustomButtom.swift */; };
+		6E7C4E9F2C81BECF005859FF /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7C4E9E2C81BECF005859FF /* CustomButton.swift */; };
+		6EE20FAE2CB812FF00AF4955 /* HandTrackingSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE20FAD2CB812FF00AF4955 /* HandTrackingSettingsScreen.swift */; };
+		6EE20FB02CB81D6C00AF4955 /* HandTrackingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE20FAF2CB81D6C00AF4955 /* HandTrackingSettings.swift */; };
+		6EF774882CB9681D00372AC8 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF774872CB9681D00372AC8 /* CGPoint+Extensions.swift */; };
+		6EF7748A2CB98A4700372AC8 /* Vision+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF774892CB98A4700372AC8 /* Vision+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -65,13 +68,16 @@
 		6E6A88752C68A0B600BA2103 /* VisionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionCoordinator.swift; sourceTree = "<group>"; };
 		6E6A88772C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CVPixelBuffer+Extensions.swift"; sourceTree = "<group>"; };
 		6E6A88792C68AADB00BA2103 /* ARFrame+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARFrame+Extensions.swift"; sourceTree = "<group>"; };
-		6E6A887F2C6DF03300BA2103 /* simd_float4x4+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "simd_float4x4+Extensions.swift"; sourceTree = "<group>"; };
+		6E6A887F2C6DF03300BA2103 /* simd_float+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "simd_float+Extensions.swift"; sourceTree = "<group>"; };
 		6E6C225C2C9B3360007F602E /* ARSettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSettingsCoordinator.swift; sourceTree = "<group>"; };
 		6E6C225E2C9B3510007F602E /* Binding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extensions.swift"; sourceTree = "<group>"; };
-		6E6C22602C9B35CC007F602E /* MediaPipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPipeView.swift; sourceTree = "<group>"; };
 		6E6C22622C9B37DB007F602E /* MediaPipe+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaPipe+Extensions.swift"; sourceTree = "<group>"; };
 		6E6C22642C9C1822007F602E /* ARDepthData+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ARDepthData+Extensions.swift"; sourceTree = "<group>"; };
-		6E7C4E9E2C81BECF005859FF /* CustomButtom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtom.swift; sourceTree = "<group>"; };
+		6E7C4E9E2C81BECF005859FF /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		6EE20FAD2CB812FF00AF4955 /* HandTrackingSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandTrackingSettingsScreen.swift; sourceTree = "<group>"; };
+		6EE20FAF2CB81D6C00AF4955 /* HandTrackingSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandTrackingSettings.swift; sourceTree = "<group>"; };
+		6EF774872CB9681D00372AC8 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
+		6EF774892CB98A4700372AC8 /* Vision+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vision+Extensions.swift"; sourceTree = "<group>"; };
 		8737E3B5A129D7A982BBFAD1 /* Pods-Tactile Vision.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tactile Vision.debug.xcconfig"; path = "Target Support Files/Pods-Tactile Vision/Pods-Tactile Vision.debug.xcconfig"; sourceTree = "<group>"; };
 		A8DC3F3E0E4B7A9669C8AADC /* Pods_Tactile_Vision.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tactile_Vision.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8BEC5C087DDBDDC527E7E5F /* Pods-Tactile Vision.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tactile Vision.release.xcconfig"; path = "Target Support Files/Pods-Tactile Vision/Pods-Tactile Vision.release.xcconfig"; sourceTree = "<group>"; };
@@ -145,8 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				6E1A6BFD2C612B6600490E16 /* ARViewContainer.swift */,
-				6E7C4E9E2C81BECF005859FF /* CustomButtom.swift */,
-				6E6C22602C9B35CC007F602E /* MediaPipeView.swift */,
+				6E7C4E9E2C81BECF005859FF /* CustomButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -154,6 +159,7 @@
 		6E1A6BFC2C612B3600490E16 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6EE20FAF2CB81D6C00AF4955 /* HandTrackingSettings.swift */,
 				6E1A6C012C612BDF00490E16 /* ARSettings.swift */,
 			);
 			path = Models;
@@ -168,9 +174,11 @@
 				6E55D94E2C65118F00EC1068 /* ARWorldTrackingConfiguration+Extensions.swift */,
 				6E6A88772C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift */,
 				6E6A88792C68AADB00BA2103 /* ARFrame+Extensions.swift */,
-				6E6A887F2C6DF03300BA2103 /* simd_float4x4+Extensions.swift */,
+				6E6A887F2C6DF03300BA2103 /* simd_float+Extensions.swift */,
 				6E6C22622C9B37DB007F602E /* MediaPipe+Extensions.swift */,
 				6E6C22642C9C1822007F602E /* ARDepthData+Extensions.swift */,
+				6EF774872CB9681D00372AC8 /* CGPoint+Extensions.swift */,
+				6EF774892CB98A4700372AC8 /* Vision+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -190,6 +198,7 @@
 			children = (
 				6E1A6BEF2C612AC900490E16 /* MainScreen.swift */,
 				6E1A6BFF2C612BBD00490E16 /* ARSettingsScreen.swift */,
+				6EE20FAD2CB812FF00AF4955 /* HandTrackingSettingsScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -312,8 +321,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E6A88802C6DF03300BA2103 /* simd_float4x4+Extensions.swift in Sources */,
+				6E6A88802C6DF03300BA2103 /* simd_float+Extensions.swift in Sources */,
 				6E0309AB2C99BA6F00A575B3 /* GestureRecognizerService.swift in Sources */,
+				6EF7748A2CB98A4700372AC8 /* Vision+Extensions.swift in Sources */,
+				6EE20FB02CB81D6C00AF4955 /* HandTrackingSettings.swift in Sources */,
 				6E55D94D2C64F1A000EC1068 /* ARConfiguration+Extensions.swift in Sources */,
 				6E55D94F2C65118F00EC1068 /* ARWorldTrackingConfiguration+Extensions.swift in Sources */,
 				6E1A6C002C612BBD00490E16 /* ARSettingsScreen.swift in Sources */,
@@ -326,12 +337,13 @@
 				6E6A887A2C68AADB00BA2103 /* ARFrame+Extensions.swift in Sources */,
 				6E6C22652C9C1822007F602E /* ARDepthData+Extensions.swift in Sources */,
 				6E6C225F2C9B3511007F602E /* Binding+Extensions.swift in Sources */,
+				6EE20FAE2CB812FF00AF4955 /* HandTrackingSettingsScreen.swift in Sources */,
 				6E1A6C022C612BDF00490E16 /* ARSettings.swift in Sources */,
 				6E6A88762C68A0B600BA2103 /* VisionCoordinator.swift in Sources */,
+				6EF774882CB9681D00372AC8 /* CGPoint+Extensions.swift in Sources */,
 				6E6A88782C68AAB500BA2103 /* CVPixelBuffer+Extensions.swift in Sources */,
 				6E6C225D2C9B3360007F602E /* ARSettingsCoordinator.swift in Sources */,
-				6E7C4E9F2C81BECF005859FF /* CustomButtom.swift in Sources */,
-				6E6C22612C9B35CC007F602E /* MediaPipeView.swift in Sources */,
+				6E7C4E9F2C81BECF005859FF /* CustomButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

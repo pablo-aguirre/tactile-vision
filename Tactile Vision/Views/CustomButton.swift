@@ -7,14 +7,13 @@
 
 import SwiftUI
 
-struct CustomButtom: View {
-    let label: String
+struct CustomButton: View {
     let systemImage: String
     let action: () -> Void
     
     var body: some View {
-        Button(label, systemImage: systemImage) {
-            action()
+        Button(action: action) {
+            Image(systemName: systemImage)
         }
         .padding()
         .background(.secondary)

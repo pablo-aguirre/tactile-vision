@@ -12,8 +12,8 @@ import ARKit
 class ARSettings: ObservableObject {
     @Published var debugOptions: ARView.DebugOptions = [.showSceneUnderstanding]
     @Published var sceneUnderstandingOptions: ARView.Environment.SceneUnderstanding.Options = [.collision]
-    @Published var frameSemantics: ARConfiguration.FrameSemantics = [.smoothedSceneDepth]
+    @Published var frameSemantics: ARConfiguration.FrameSemantics = [.smoothedSceneDepth, .personSegmentationWithDepth]
     @Published var sceneReconstruction: ARConfiguration.SceneReconstruction = [.mesh]
-    @Published var planeDetection: ARWorldTrackingConfiguration.PlaneDetection = [.horizontal, .vertical]
+    @Published var planeDetection: ARWorldTrackingConfiguration.PlaneDetection = [.horizontal]
     @Published var fps: Int = 30
 }

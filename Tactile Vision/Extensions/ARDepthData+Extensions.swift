@@ -8,6 +8,11 @@
 import ARKit
 
 extension ARConfidenceLevel: @retroactive CaseIterable {
+    
+    public init?(rawValue: UInt8) {
+        self.init(rawValue: Int(rawValue))
+    }
+    
     public static var allCases: [ARConfidenceLevel] {
         [.low, .medium, .high]
     }

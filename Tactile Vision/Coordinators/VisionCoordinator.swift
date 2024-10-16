@@ -43,9 +43,8 @@ class VisionCoordinator: NSObject, ARSessionDelegate {
             guard let observation = handPoseRequest.results?.first else { return }
             
             let recognizedPoint = try observation.recognizedPoint(.indexDIP)
-            let point = (x: Float(recognizedPoint.x), y: Float(recognizedPoint.y))
             
-            if recognizedPoint.confidence > 0.3, let (indexCoordinates, lidarConfidence) = frame.worldPoint(at: point), lidarConfidence == .high {
+            if recognizedPoint.confidence > 0.3, let (indexCoordinates, _) = frame.worldPoint(at: recognizedPoint.point, withConfidenceIn: .init([.high, .medium])) {
                 sphereAnchor.setPosition(indexCoordinates, relativeTo: nil)
                 
                 let results = arView.scene.raycast(origin: indexCoordinates, direction: [0, -1, 0],  mask: .sceneUnderstanding)

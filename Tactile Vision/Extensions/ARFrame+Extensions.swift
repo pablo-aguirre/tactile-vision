@@ -9,25 +9,23 @@ import ARKit
 
 extension ARFrame {
     
-    // MARK: - Cached Properties
+    var timestampInMilliseconds: Int {
+        Int(self.timestamp * 1000)
+    }
+    
     private static var cachedIntrinsicsInverse: simd_float3x3?
-    private static var cachedDepthMapSize: (width: Float, height: Float) = (0, 0)
     
     var cameraIntrinsicsInverseForDepthMap: simd_float3x3? {
         guard let depthMap = self.smoothedSceneDepth?.depthMap else { return nil }
         
-        let depthMapSize = depthMap.size()
-        
-        if ARFrame.cachedDepthMapSize.width != depthMapSize.width ||
-            ARFrame.cachedDepthMapSize.height != depthMapSize.height ||
-            ARFrame.cachedIntrinsicsInverse == nil
-        {
+        if ARFrame.cachedIntrinsicsInverse == nil {
+            let depthMapSize = depthMap.size
+            let capturedImageSize = self.capturedImage.size
             var cameraIntrinsics = self.camera.intrinsics
-            let capturedImageSize = self.capturedImage.size()
             
-            let scaleRes = simd_float2(
-                x: Float(capturedImageSize.width) / depthMapSize.width,
-                y: Float(capturedImageSize.height) / depthMapSize.height
+            let scaleRes: SIMD2<Float> = .init(
+                x: capturedImageSize.width / depthMapSize.width,
+                y: capturedImageSize.height / depthMapSize.height
             )
             cameraIntrinsics[0][0] /= scaleRes.x
             cameraIntrinsics[1][1] /= scaleRes.y
@@ -35,32 +33,58 @@ extension ARFrame {
             cameraIntrinsics[2][1] /= scaleRes.y
             
             ARFrame.cachedIntrinsicsInverse = cameraIntrinsics.inverse
-            ARFrame.cachedDepthMapSize = depthMapSize
         }
         
         return ARFrame.cachedIntrinsicsInverse
     }
     
+    func worldPoint(at normalizedPoint: CGPoint, withConfidenceIn acceptableConfidences: Set<ARConfidenceLevel>) -> (SIMD3<Float>, ARConfidenceLevel)? {
+        guard let depthConfidenceRawValue = self.smoothedSceneDepth?.confidenceMap?.value(at: normalizedPoint, as: UInt8.self),
+              let depthConfidence = ARConfidenceLevel(rawValue: depthConfidenceRawValue),
+              acceptableConfidences.contains(depthConfidence),
+              let depth = self.smoothedSceneDepth?.depthMap.value(at: normalizedPoint, as: Float.self),
+              let point3D = self.worldPoint(at: normalizedPoint, with: depth)
+        else { return nil }
+        
+        return (point3D, depthConfidence)
+    }
+    
+    private func worldPoint(at normalizedPoint: CGPoint, with depth: Float) -> SIMD3<Float>? {
+        guard let depthMap = self.smoothedSceneDepth?.depthMap,
+              let pixelCoordinates = depthMap.pixelCoordinates(at: normalizedPoint),
+              let cameraIntrinsicsInverseForDepthMap = self.cameraIntrinsicsInverseForDepthMap else { return nil }
+        
+        let viewMatrixInverted = self.camera.viewMatrix(for: .landscapeRight).inverse
+        
+        let localPoint = cameraIntrinsicsInverseForDepthMap * simd_float3(simd_float2(pixelCoordinates.column, pixelCoordinates.row), 1) * -depth
+        let localPointSwappedX = simd_float3(-localPoint.x, localPoint.y, localPoint.z)
+        let worldPointHomogeneous = viewMatrixInverted * simd_float4(localPointSwappedX, 1)
+        
+        let worldPoint = simd_float3(
+            worldPointHomogeneous.x,
+            worldPointHomogeneous.y,
+            worldPointHomogeneous.z
+        ) / worldPointHomogeneous.w
+        
+        return worldPoint
+    }
+    
     // This one is adapted from:
     // https://developer.apple.com/forums/thread/676368
-    func worldPoint(at point: (x: Float, y: Float)) -> (SIMD3<Float>, ARConfidenceLevel)? {
+    private func worldPoint(at point: CGPoint) -> (SIMD3<Float>, ARConfidenceLevel)? {
         guard let depthMap = self.smoothedSceneDepth?.depthMap,
               let depth = depthMap.value(at: point, as: Float.self),
               let confidenceMap = self.smoothedSceneDepth?.confidenceMap,
               let confidenceRawValue = confidenceMap.value(at: point, as: UInt8.self),
-              let confidence = ARConfidenceLevel(rawValue: Int(confidenceRawValue)),
+              let confidence = ARConfidenceLevel(rawValue: confidenceRawValue),
               let cameraIntrinsicsInverted = self.cameraIntrinsicsInverseForDepthMap else { return nil }
         
-        let depthMapSize = depthMap.size()
-        let pixelCoordinates = simd_float2(
-            point.x * depthMapSize.width,
-            point.y * depthMapSize.height
-        )
+        guard let pixelCoordinates = depthMap.pixelCoordinates(at: point) else { return nil }
         
         // This is crucial: you need to always use the view matrix for Landscape Right.
         let viewMatrixInverted = self.camera.viewMatrix(for: .landscapeRight).inverse
         
-        let localPoint = cameraIntrinsicsInverted * simd_float3(pixelCoordinates, 1) * -depth
+        let localPoint = cameraIntrinsicsInverted * simd_float3(simd_float2(pixelCoordinates.column, pixelCoordinates.row), 1) * -depth
         let localPointSwappedX = simd_float3(-localPoint.x, localPoint.y, localPoint.z)
         let worldPointHomogeneous = viewMatrixInverted * simd_float4(localPointSwappedX, 1)
         
@@ -75,16 +99,16 @@ extension ARFrame {
     
     // This one is adapted from:
     // http://nicolas.burrus.name/index.php/Research/KinectCalibration
-    private func worldPoint2(at point: (x: Float, y: Float)) -> (SIMD3<Float>, ARConfidenceLevel)? {
+    private func worldPoint2(at point: CGPoint) -> (SIMD3<Float>, ARConfidenceLevel)? {
         guard let depthMap = self.smoothedSceneDepth?.depthMap,
               let depth = depthMap.value(at: point, as: Float.self),
               let confidenceMap = self.smoothedSceneDepth?.confidenceMap,
               let confidenceRawValue = confidenceMap.value(at: point, as: UInt8.self),
-              let confidence = ARConfidenceLevel(rawValue: Int(confidenceRawValue)),
+              let confidence = ARConfidenceLevel(rawValue: confidenceRawValue),
               let cameraIntrinsics = self.cameraIntrinsicsInverseForDepthMap else { return nil }
         
-        let depthMapSize = depthMap.size()
-        let depthMapPixelPoint = simd_float2(point.x * depthMapSize.width, point.y * depthMapSize.height)
+        let depthMapSize = depthMap.size
+        let depthMapPixelPoint = simd_float2(x: point.x * depthMapSize.width, y: point.y * depthMapSize.height)
         // This is crucial: you need to always use the view matrix for Landscape Right.
         let viewMatrixInverted = self.camera.viewMatrix(for: .landscapeRight).inverse
         

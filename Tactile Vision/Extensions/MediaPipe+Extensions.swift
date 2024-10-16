@@ -23,7 +23,9 @@ extension ResultCategory {
 }
 
 extension NormalizedLandmark {
-    var point: (x: Float, y: Float) {
-        return (x: self.x, y: self.y)
+    var point: CGPoint {
+        let x = CGFloat(self.x)
+        let y = CGFloat(self.y)
+        return CGPoint(x: x, y: y)
     }
 }
