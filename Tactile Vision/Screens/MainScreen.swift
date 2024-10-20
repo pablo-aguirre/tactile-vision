@@ -19,10 +19,20 @@ struct MainScreen: View {
         ZStack {
             ARViewContainer(arSettings: arSettings, handTrackingSettings: handTrackingSettings)
                 .ignoresSafeArea()
-                .overlay { Circle().frame(width: 5, height: 5) }
+                //.overlay { Circle().frame(width: 5, height: 5) }
             VStack {
                 Text(handTrackingSettings.gesture)
                     .padding()
+                    .background(.secondary)
+                    .clipShape(RoundedRectangle(cornerSize: .init(width: 15, height: 15)))
+                Text("x: \(handTrackingSettings.coords.x.formatted(.number.precision(.fractionLength(2)))) cm z: \(handTrackingSettings.coords.z.formatted(.number.precision(.fractionLength(2)))) cm")
+                    .padding()
+                    .foregroundStyle(.white)
+                    .background(.secondary)
+                    .clipShape(RoundedRectangle(cornerSize: .init(width: 15, height: 15)))
+                Text("Distance hand-table: \(handTrackingSettings.distanceFromTable.formatted(.number.precision(.fractionLength(2)))) cm")
+                    .padding()
+                    .foregroundStyle(.white)
                     .background(.secondary)
                     .clipShape(RoundedRectangle(cornerSize: .init(width: 15, height: 15)))
                 Spacer()

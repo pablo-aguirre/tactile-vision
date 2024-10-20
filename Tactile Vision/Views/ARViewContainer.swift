@@ -36,12 +36,12 @@ struct ARViewContainer: UIViewRepresentable {
     private func configureSession(in arView: ARView) {
         let configuration = ARWorldTrackingConfiguration()
         
-        //guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
-        //    fatalError("Missing images resources.")
-        //}
-        //configuration.detectionImages = referenceImages
-        //configuration.maximumNumberOfTrackedImages = 1
-        //configuration.automaticImageScaleEstimationEnabled = true
+        guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
+            fatalError("Missing images resources.")
+        }
+        configuration.detectionImages = referenceImages
+        configuration.maximumNumberOfTrackedImages = 1
+        configuration.automaticImageScaleEstimationEnabled = true
         
         if let videoFormat = ARWorldTrackingConfiguration.supportedVideoFormats.first(where: { $0.framesPerSecond == arSettings.fps }) {
             configuration.videoFormat = videoFormat

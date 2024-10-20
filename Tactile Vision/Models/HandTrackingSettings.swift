@@ -11,9 +11,11 @@ import ARKit
 class HandTrackingSettings {
     var trackingEnabled: Bool = true
     var gesture: String = ""
+    var coords: SIMD3<Float> = .zero
+    var distanceFromTable: Float = .zero
     var dipTipFraction: Float = 1
     
-    var mcpConfidence: Set<ARConfidenceLevel> = [.high]
+    var mcpConfidence: Set<ARConfidenceLevel> = [.high, .medium]
     var targetConfidence: Set<ARConfidenceLevel> = [.high, .medium]
     var heightThreshold: Float = 10 // cm
 }
